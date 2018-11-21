@@ -1,0 +1,8 @@
+logging:
+  config: classpath:config/log4j2.xml
+spring:
+  application:
+    name: spring-boot-eureka-pressure-test
+eureka:
+  pressure:
+    address: http://localhost:8761/eureka
