@@ -5,7 +5,7 @@ package org.hiphone.eureka.pressure.test.constants;
  */
 public class Constant {
 
-    public static final Integer TIMEOUT_VALUE = 5000;
+    public static final Integer TIMEOUT_VALUE = 10000;
 
     public static final String SWAGGER_BASE_PACKAGE = "org.hiphone.eureka.pressure.test";
 
