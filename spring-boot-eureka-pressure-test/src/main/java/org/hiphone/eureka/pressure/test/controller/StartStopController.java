@@ -1,5 +1,6 @@
 package org.hiphone.eureka.pressure.test.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.hiphone.eureka.pressure.test.entitys.ResultMessage;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/press")
+@Api(value = "StartStopController", description = "注册与心跳包压力测试的controller")
 public class StartStopController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StartStopController.class);
