@@ -5,6 +5,12 @@ package org.hiphone.swagger.center.constants;
  */
 public class Constant {
 
+    public static final String URL_PREFIX = "http://";
+
+    public static final String URL_END = "/v2/api-docs";
+
+    public static final String FILTER_SERVICE_NAME = "UNKNOWN";
+
     public static final Integer TIMEOUT_VALUE = 5000;
 
     public static final String SWAGGER_BASE_PACKAGE = "org.hiphone.swagger.center";
