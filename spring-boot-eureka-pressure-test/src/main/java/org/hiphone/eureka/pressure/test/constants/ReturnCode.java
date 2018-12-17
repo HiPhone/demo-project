@@ -15,7 +15,7 @@ public enum ReturnCode {
 
     private int code;
 
-    private ReturnCode(int code, String message) {
+    ReturnCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
