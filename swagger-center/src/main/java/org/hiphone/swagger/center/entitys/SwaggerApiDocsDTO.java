@@ -13,9 +13,7 @@ import java.sql.Timestamp;
 @Setter
 public class SwaggerApiDocsDTO {
 
-    /**
-     * serviceName作为数据库的id字段
-     */
+    private Long id;
     private String serviceName;
     private String swaggerServiceUrl;
     private JSONObject swaggerApiDocs;

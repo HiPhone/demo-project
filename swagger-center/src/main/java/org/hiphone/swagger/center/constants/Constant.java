@@ -5,9 +5,13 @@ package org.hiphone.swagger.center.constants;
  */
 public class Constant {
 
+    public static final Integer SCAN_TRY_TIMES = 10;
+
+    public static final String JUDGE_STRING = "swagger";
+
     public static final String URL_PREFIX = "http://";
 
-    public static final String URL_END = "/v2/api-docs";
+    public static final String URL_SUFFIX = "/v2/api-docs";
 
     public static final String FILTER_SERVICE_NAME = "UNKNOWN";
 

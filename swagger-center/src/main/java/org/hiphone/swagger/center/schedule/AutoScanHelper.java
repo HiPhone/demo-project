@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 自动扫描eureka使用的方法类
@@ -25,13 +23,16 @@ public class AutoScanHelper {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RestTemplate loadBalanced;
+
     /**
      * 到eureka中获取注册服务的信息
      * @return 注册服务信息的list
      */
     public List<String> getAppNameFromEureka() {
-        String[] eurekaUrls = this.constructUrls(defaultZone.split(","));
-        String eurekaUrl = this.getRandomUrl(eurekaUrls);
+        String[] eurekaUrls = constructUrls(defaultZone.split(","));
+        String eurekaUrl = getRandomUrl(eurekaUrls);
         JSONObject eurekaApplicationJson = null;
 
         try {
@@ -40,7 +41,7 @@ public class AutoScanHelper {
         } catch (Exception e) {
             log.warn("One eureka node is down! the node is " + eurekaUrl);
         }
-        return this.getApplicationNameList(eurekaApplicationJson);
+        return getApplicationNameList(eurekaApplicationJson);
     }
 
 
@@ -90,5 +91,50 @@ public class AutoScanHelper {
             }
         }
         return applicationNameList;
+    }
+
+    /**
+     * 构造ribbon请求URL
+     * @param serviceName 服务名称
+     * @return 构造完成的ribbon请求url
+     */
+    private static String constructRequestUrl(String serviceName) {
+        return new StringBuilder()
+                .append(Constant.URL_PREFIX)
+                .append(serviceName)
+                .append(Constant.URL_SUFFIX)
+                .toString();
+    }
+
+    /**
+     * 获取每个serviceName对应的api-docs
+     * @param serviceNames serviceName 的 list
+     * @return serviceName与api-docs对应的map
+     */
+    public Map<String, JSONObject> getSwaggerApiMap (List<String> serviceNames) {
+        Map<String, JSONObject> swaggerApiDocsMap = new HashMap<>();
+
+        serviceNames.forEach(s -> {
+            String requestUrl = constructRequestUrl(s);
+            JSONObject swaggerApiDocs = null;
+
+            for (int index = 1; index <= Constant.SCAN_TRY_TIMES; index++) {
+                try {
+                    log.info("Trying to fetch swagger api-docs from {} throws eureka service...... Try count is {}", requestUrl, index);
+                    swaggerApiDocs = loadBalanced.getForEntity(requestUrl, JSONObject.class).getBody();
+                } catch (Exception e) {
+                    log.info("Fetching fail! Try again then......");
+                }
+                if (swaggerApiDocs != null && swaggerApiDocs.toJSONString().contains(Constant.JUDGE_STRING)) {
+                    swaggerApiDocsMap.put(s, swaggerApiDocs);
+                }
+            }
+        });
+
+        return swaggerApiDocsMap;
+    }
+
+    public void updateSwaggerDataBase(Map<String, JSONObject> swaggerApiDocsMap) {
+
     }
 }
