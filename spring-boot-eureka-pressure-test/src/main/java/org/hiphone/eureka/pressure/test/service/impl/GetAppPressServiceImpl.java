@@ -1,5 +1,6 @@
 package org.hiphone.eureka.pressure.test.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.pressure.test.constants.ReturnCode;
 import org.hiphone.eureka.pressure.test.entitys.ResultMessage;
 import org.hiphone.eureka.pressure.test.service.GetAppPressService;
@@ -21,10 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author HiPhone
  */
+@Slf4j
 @Service
 public class GetAppPressServiceImpl implements GetAppPressService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetAppPressServiceImpl.class);
 
     @Value("${eureka.pressure.address}")
     private String eurekaServerListString;
@@ -63,7 +63,7 @@ public class GetAppPressServiceImpl implements GetAppPressService {
                     try {
                         Thread.sleep(intervalMillis);
                     } catch (InterruptedException e) {
-                        LOGGER.error("wait intervalMillis get interrupted......");
+                        log.error("wait intervalMillis get interrupted......");
                         e.printStackTrace();
                     }
                 }
@@ -74,7 +74,7 @@ public class GetAppPressServiceImpl implements GetAppPressService {
                     @Override
                     public Object call() throws Exception {
                         restTemplate.getForEntity(eurekaServerList[registerServerNum] + "/apps", String.class);
-                        LOGGER.info("Get application pressure count: {}", count.getAndIncrement());
+                        log.info("Get application pressure count: {}", count.getAndIncrement());
                         return null;
                     }
                 });
@@ -85,10 +85,10 @@ public class GetAppPressServiceImpl implements GetAppPressService {
                 try {
                     future.get();
                 } catch (InterruptedException e) {
-                    LOGGER.error("Future task get interrupted!");
+                    log.error("Future task get interrupted!");
                     e.printStackTrace();
                 } catch (ExecutionException e) {
-                    LOGGER.error("Future task get Execution error!");
+                    log.error("Future task get Execution error!");
                     e.printStackTrace();
                 }
             }

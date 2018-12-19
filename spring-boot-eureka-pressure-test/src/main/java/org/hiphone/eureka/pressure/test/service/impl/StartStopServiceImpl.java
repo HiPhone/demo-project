@@ -1,6 +1,7 @@
 package org.hiphone.eureka.pressure.test.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.pressure.test.constants.ReturnCode;
 import org.hiphone.eureka.pressure.test.entitys.ResultMessage;
 import org.hiphone.eureka.pressure.test.service.StartStopService;
@@ -24,10 +25,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * @author HiPhone
+ */
+@Slf4j
 @Service
 public class StartStopServiceImpl implements StartStopService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StartStopServiceImpl.class);
 
     @Value("${eureka.pressure.address}")
     private String eurekaServerListString;
@@ -80,7 +83,7 @@ public class StartStopServiceImpl implements StartStopService {
                         public Object call() throws Exception {
                             //发送注册请求
                             register(applicationName, instanceName, eurekaServerList[eurekaServerNum]);
-                            LOGGER.info("register instance: {}", instanceName);
+                            log.info("register instance: {}", instanceName);
 
                             //发送心跳包
                             Runnable run = new Runnable() {
@@ -91,7 +94,7 @@ public class StartStopServiceImpl implements StartStopService {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    LOGGER.info("heartbeat sent, instance name is {}", instanceName);
+                                    log.info("heartbeat sent, instance name is {}", instanceName);
                                 }
                             };
                             executorService.scheduleWithFixedDelay(run, heartBeatInterval, heartBeatInterval, TimeUnit.SECONDS);
@@ -109,7 +112,7 @@ public class StartStopServiceImpl implements StartStopService {
                     executorService.submit(startRegister);
                 }
             }
-            resultMessage.setData("压力测试配置完成，已开始");
+            resultMessage.setData("压力测试配置并注册完成，已开始心跳发送阶段");
         }
 
         return resultMessage;
@@ -121,9 +124,9 @@ public class StartStopServiceImpl implements StartStopService {
         executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 2);
 
         //删除注册的instance
-        for (int i = 0; i < instanceRegisterServers.size(); i++) {
-            String eurekaServer = eurekaServerList[i];
-            List<String[]> instanceList = instanceRegisterServers.get(i);
+        for (int index = 0; index < instanceRegisterServers.size(); index++) {
+            String eurekaServer = eurekaServerList[index];
+            List<String[]> instanceList = instanceRegisterServers.get(index);
             for (int j = 0; j < instanceList.size(); j++) {
                 String[] strings = instanceList.get(j);
 
@@ -172,7 +175,7 @@ public class StartStopServiceImpl implements StartStopService {
 
         HttpEntity entity = new HttpEntity(headers);
         ResponseEntity<String> exchange = restTemplate.exchange(requestUrl, HttpMethod.PUT, entity, String.class, body);
-        LOGGER.info("finish send a heartbeat to instance {}, response is {}", instanceName, exchange);
+        log.info("finish send a heartbeat to instance {}, response is {}", instanceName, exchange);
     }
 
     /**
@@ -184,7 +187,7 @@ public class StartStopServiceImpl implements StartStopService {
     private void register(String applicationName, String instanceName, String eurekaServer) {
         URI eurekaUri = URI.create(eurekaServer);
 
-        String requstUrl = new StringBuffer()
+        String requestUrl = new StringBuffer()
                 .append(eurekaServer)
                 .append("apps/")
                 .append(applicationName)
@@ -202,11 +205,11 @@ public class StartStopServiceImpl implements StartStopService {
 
         JSONObject requestBody = this.constructRegisterBody(applicationName, instanceName);
 
-        HttpEntity entity = new HttpEntity(requestBody, headers);
+        HttpEntity entity = new HttpEntity(requestBody.toString(), headers);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(requstUrl, HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(requestUrl, HttpMethod.POST, entity, String.class);
 
-        LOGGER.info("finish a pressure request, response is {}", exchange);
+        log.info("finish a pressure request, response is {}", exchange);
     }
 
     /**
@@ -226,9 +229,9 @@ public class StartStopServiceImpl implements StartStopService {
         instanceBody.put("status", "UP");
         instanceBody.put("overriddenstatus", "UNKNOWN");
         instanceBody.put("countryId", 1);
-        instanceBody.put("homePageUrl", "http://localhost:8081/");
-        instanceBody.put("statusPageUrl", "http://localhost:8081/info");
-        instanceBody.put("healthCheckUrl", "http://localhost:8081/health");
+        instanceBody.put("homePageUrl", "http://localhost:8080/");
+        instanceBody.put("statusPageUrl", "http://localhost:8080/info");
+        instanceBody.put("healthCheckUrl", "http://localhost:8080/health");
         instanceBody.put("vipAddress", "JZY-REG");
         instanceBody.put("secureVipAddress", "JZY-REG");
         instanceBody.put("isCoordinatingDiscoveryServer", "false");
@@ -242,7 +245,7 @@ public class StartStopServiceImpl implements StartStopService {
 
         JSONObject securePortMsg = new JSONObject();
         securePortMsg.put("$", 443);
-        securePortMsg.put("@enable", "false");
+        securePortMsg.put("@enabled", "false");
         instanceBody.put("securePort", securePortMsg);
 
         JSONObject dataCenterMsg = new JSONObject();

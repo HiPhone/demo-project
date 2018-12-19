@@ -5,13 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.hiphone</groupId>
-    <artifactId>eureka.pressure.test</artifactId>
+    <artifactId>eureka-pressure-test</artifactId>
     <version>1.0.0</version>
 
     <properties>
         <java.version>11</java.version>
         <fastjson.version>1.2.49</fastjson.version>
         <swagger.version>2.9.2</swagger.version>
+        <http.version>4.4.1</http.version>
+        <lombok.version>1.18.4</lombok.version>
     </properties>
 
     <parent>
@@ -32,6 +34,12 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
         <!-- swagger dependency -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -43,6 +51,19 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+
+        <!-- http dependency -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${http.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${http.version}</version>
         </dependency>
 
         <!-- log4j2 dependency -->

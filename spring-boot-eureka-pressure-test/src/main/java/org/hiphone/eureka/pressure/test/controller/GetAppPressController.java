@@ -2,6 +2,7 @@ package org.hiphone.eureka.pressure.test.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.pressure.test.entitys.ResultMessage;
 import org.hiphone.eureka.pressure.test.service.GetAppPressService;
 import org.slf4j.Logger;
@@ -15,23 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author HiPhone
  */
+@Slf4j
 @RestController
 @Api(value = "GetAppPressController", description = "模拟eureka客户端同步注册服务信息的controller")
 public class GetAppPressController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetAppPressController.class);
 
     @Autowired
     private GetAppPressService appPressService;
 
     @ResponseBody
-    @GetMapping("/get-applications")
+    @GetMapping("/fetch-applications")
     public ResultMessage getApplicationsPress(
             @RequestParam(name = "randomRegister") @ApiParam(name = "randomRegister", value = "是否随机向eureka节点请求") boolean randomRegister,
             @RequestParam(name = "intervalMillis") @ApiParam(name = "intervalMillis", value = "请求eureka的时间间隔") int intervalMillis,
             @RequestParam(name = "totalCount") @ApiParam(name = "totalCount", value = "请求的总次数") int totalCount
     ) {
-        LOGGER.info("get a task to start get application press to eureka......");
+        log.info("get a task to start get application press to eureka......");
         return appPressService.getApplicationPress(randomRegister, intervalMillis, totalCount);
     }
 

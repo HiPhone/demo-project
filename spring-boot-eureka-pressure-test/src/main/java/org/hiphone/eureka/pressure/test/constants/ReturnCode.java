@@ -1,5 +1,8 @@
 package org.hiphone.eureka.pressure.test.constants;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author HiPhone
  */
@@ -11,20 +14,14 @@ public enum ReturnCode {
     BUSY_ERROR(1004, "服务繁忙，请稍后尝试");
 
 
+    @Getter
     private String message;
 
+    @Getter
     private int code;
 
     ReturnCode(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public int getCode() {
-        return this.code;
     }
 }

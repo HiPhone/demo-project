@@ -2,12 +2,16 @@ package org.hiphone.eureka.pressure.test.entitys;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 /**
  * @author HiPhone
  */
+@Getter
+@Setter
 @ApiModel(value = "ResultMessage", description = "将返回值封装，统一放回的数据报文")
 public class ResultMessage implements Serializable {
 
@@ -22,35 +26,9 @@ public class ResultMessage implements Serializable {
     @ApiModelProperty(value = "返回的数据", name = "data")
     private Object data;
 
-    public ResultMessage() {}
-
     public ResultMessage(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
-        this.data = data;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
         this.data = data;
     }
 

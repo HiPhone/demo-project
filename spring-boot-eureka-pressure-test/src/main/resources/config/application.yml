@@ -5,4 +5,4 @@ spring:
     name: spring-boot-eureka-pressure-test
 eureka:
   pressure:
-    address: http://localhost:8761/eureka/
+    address: http://22.104.216.206:9761/eureka/
