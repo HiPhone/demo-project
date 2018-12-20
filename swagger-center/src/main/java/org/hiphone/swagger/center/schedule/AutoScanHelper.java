@@ -112,7 +112,7 @@ public class AutoScanHelper {
      * @return serviceName与api-docs对应的map
      */
     public Map<String, JSONObject> getSwaggerApiMap (List<String> serviceNames) {
-        Map<String, JSONObject> swaggerApiDocsMap = new HashMap<>();
+        Map<String, JSONObject> swaggerApiDocsMap = new LinkedHashMap<>();
 
         serviceNames.forEach(s -> {
             String requestUrl = constructRequestUrl(s);

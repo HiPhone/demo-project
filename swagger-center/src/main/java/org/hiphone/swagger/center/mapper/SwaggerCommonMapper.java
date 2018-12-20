@@ -36,7 +36,7 @@ public interface SwaggerCommonMapper {
      * @param swaggerApiDocsDTO swaggerApiDTO
      * @return 插入结果
      */
-    Integer insertSwaggerApiDocs(SwaggerApiDocsDTO swaggerApiDocsDTO);
+    Integer insertSwaggerApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO);
 
     /**
      * 更新数据库中的api信息

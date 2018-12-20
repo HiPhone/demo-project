@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.sql.Date;
  */
 @Getter
 @Setter
+@ToString
 @ApiModel(value = "UserDTO", description = "用户信息封装数据传输类")
 @JSONType(orders = {"id" , "loginName", "password", "role", "createBy", "createBy", "createTime", "updateBy", "updateTime"})
 public class UserDTO implements Serializable {
