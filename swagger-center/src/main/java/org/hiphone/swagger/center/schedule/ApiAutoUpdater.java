@@ -19,12 +19,12 @@ public class ApiAutoUpdater {
     @Autowired
     private AutoScanHelper autoScanHelper;
 
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0 0/60 * * * ?")
     public void autoScan() {
 
         log.info("Starting to scan the swagger api-doc by eureka......");
 
-        List<String> eurekaServiceNames = autoScanHelper.getAppNameFromEureka();
+        List<String> eurekaServiceNames = autoScanHelper.getApplicationNamesFromEureka();
 
         if (!eurekaServiceNames.isEmpty()) {
             Map<String, JSONObject> swaggerApiDocsMap = autoScanHelper.getSwaggerApiMap(eurekaServiceNames);

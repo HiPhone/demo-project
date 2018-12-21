@@ -2,7 +2,7 @@ package org.hiphone.swagger.center.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.hiphone.swagger.center.constants.Constant;
-import org.hiphone.swagger.center.utils.EncryptoUtil;
+import org.hiphone.swagger.center.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,7 +70,7 @@ public class DataSourceConfig {
 
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(username);
-        dataSource.setPassword(EncryptoUtil.decryptoStringByBase64(password, Constant.BASE64_KEY));
+        dataSource.setPassword(EncryptUtil.decryptStringByBase64(password, Constant.BASE64_KEY));
         dataSource.setDbType(dbType);
         dataSource.setDriverClassName(driverClassName);
 

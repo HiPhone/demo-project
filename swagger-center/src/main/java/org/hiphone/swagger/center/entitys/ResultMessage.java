@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -13,7 +12,6 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@ToString
 @ApiModel(value = "ResultMessage", description = "将返回值封装，统一放回的数据报文")
 public class ResultMessage implements Serializable {
 

@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.swagger.center.constants.Constant;
+import org.hiphone.swagger.center.service.ApiBackendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -15,6 +18,7 @@ import java.util.*;
  * @author HiPhone
  */
 @Slf4j
+@Component
 public class AutoScanHelper {
 
     @Value("${eureka.client.service-url.defaultZone}")
@@ -26,12 +30,24 @@ public class AutoScanHelper {
     @Autowired
     private RestTemplate loadBalanced;
 
+    @Autowired
+    private ApiBackendService apiBackendService;
+
+    private List<String> dbServiceNames = new ArrayList<>();
+    private String[] eurekaUrls = null;
+
+    @PostConstruct
+    private void init() {
+        dbServiceNames = apiBackendService.queryAllServiceNames();
+        eurekaUrls = constructUrls(defaultZone.split(","));
+        log.info("serviceId list initialized success, the size of service id list is {}", dbServiceNames.size());
+    }
+
     /**
      * 到eureka中获取注册服务的信息
      * @return 注册服务信息的list
      */
-    public List<String> getAppNameFromEureka() {
-        String[] eurekaUrls = constructUrls(defaultZone.split(","));
+    public List<String> getApplicationNamesFromEureka() {
         String eurekaUrl = getRandomUrl(eurekaUrls);
         JSONObject eurekaApplicationJson = null;
 
@@ -39,7 +55,7 @@ public class AutoScanHelper {
             log.info("Starting to get the application number from eureka ...");
             eurekaApplicationJson = restTemplate.getForEntity(eurekaUrl, JSONObject.class).getBody();
         } catch (Exception e) {
-            log.warn("One eureka node is down! the node is " + eurekaUrl);
+            log.warn("One eureka node is down! the node is {}", eurekaUrl);
         }
         return getApplicationNameList(eurekaApplicationJson);
     }
@@ -112,7 +128,7 @@ public class AutoScanHelper {
      * @return serviceName与api-docs对应的map
      */
     public Map<String, JSONObject> getSwaggerApiMap (List<String> serviceNames) {
-        Map<String, JSONObject> swaggerApiDocsMap = new LinkedHashMap<>();
+        Map<String, JSONObject> swaggerApiDocsMap = new HashMap<>();
 
         serviceNames.forEach(s -> {
             String requestUrl = constructRequestUrl(s);
@@ -134,7 +150,7 @@ public class AutoScanHelper {
         return swaggerApiDocsMap;
     }
 
-    public void updateSwaggerDataBase(Map<String, JSONObject> swaggerApiDocsMap) {
+    public void commitChangesToDatabase(Map<String, JSONObject> swaggerApiDocsMap) {
 
     }
 }

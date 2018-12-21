@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author HiPhone
  */
 @Slf4j
-public class EncryptoUtil {
+public class EncryptUtil {
 
     /**
      * 对称加密字符串
@@ -48,7 +48,7 @@ public class EncryptoUtil {
      * @param base64key 对称加密的key
      * @return 解密后的值
      */
-    public static String decryptoStringByBase64(String text, String base64key) {
+    public static String decryptStringByBase64(String text, String base64key) {
         if (StringUtils.isEmpty(base64key)) {
             base64key = Constant.BASE64_KEY;
         }
