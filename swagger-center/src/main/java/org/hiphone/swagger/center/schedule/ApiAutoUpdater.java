@@ -27,9 +27,10 @@ public class ApiAutoUpdater {
         List<String> eurekaServiceNames = autoScanHelper.getApplicationNamesFromEureka();
 
         if (!eurekaServiceNames.isEmpty()) {
+            //获取eureka中注册的服务的名称列表
             Map<String, JSONObject> swaggerApiDocsMap = autoScanHelper.getSwaggerApiMap(eurekaServiceNames);
-
-
+            //更新数据到数据库中
+            autoScanHelper.commitChangesToDatabase(swaggerApiDocsMap);
         } else {
             log.warn("can't get application names from eureka......");
         }

@@ -3,7 +3,7 @@ package org.hiphone.swagger.center.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.swagger.center.constants.ReturnCode;
+import org.hiphone.swagger.center.constants.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +28,8 @@ public class TestController {
         log.info("Receive a request for testing " + applicationName);
 
         return new ResultMessage(
-                ReturnCode.SUCCESS.getCode(),
-                ReturnCode.SUCCESS.getMessage(),
+                ReturnMsg.SUCCESS.getCode(),
+                ReturnMsg.SUCCESS.getMessage(),
                 applicationName + " is alive");
     }
 

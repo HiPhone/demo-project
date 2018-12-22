@@ -44,4 +44,18 @@ public class UserDTO implements Serializable {
 
     @ApiParam(value = "角色更新时间", name = "updateTime")
     private Date updateTime;
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", loginName='" + loginName + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

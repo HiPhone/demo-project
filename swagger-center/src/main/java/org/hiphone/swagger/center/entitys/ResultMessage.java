@@ -32,5 +32,14 @@ public class ResultMessage implements Serializable {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "{\"" +
+                "code\":" + code +
+                ", \"message\":\"" + message +
+                '\"' + ", \"data\":" + data +
+                '}';
+    }
+
 }
 

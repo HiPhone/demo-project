@@ -45,4 +45,12 @@ public class Constant {
 
     public static final String ROLE_USER = "ROLE_USER";
 
+    public static final String API_INFO = "info";
+
+    public static final String API_TAGS = "tags";
+
+    public static final String API_PATHs = "paths";
+
+    public static final String API_DEFINITIONS = "definitions";
+
 }

@@ -1,7 +1,7 @@
 package org.hiphone.swagger.center.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.swagger.center.constants.ReturnCode;
+import org.hiphone.swagger.center.constants.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
 import org.hiphone.swagger.center.mapper.UserMapper;
 import org.hiphone.swagger.center.service.UserService;
@@ -25,15 +25,15 @@ public class UserServiceImpl implements UserService {
         try {
             log.info("Starting to check login info which loginName is {}", loginName);
 
-            resultMessage = new ResultMessage(ReturnCode.SUCCESS.getCode(),
-                    ReturnCode.LOGIN_SUCCESS.getMessage(),
+            resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
+                    ReturnMsg.LOGIN_SUCCESS.getMessage(),
                     userMapper.getUserByLoginName(loginName));
 
         } catch (Exception e) {
             e.printStackTrace();
             log.error("database get error, message is {}", e.getMessage());
-            resultMessage = new ResultMessage(ReturnCode.SQL_ERROR.getCode(),
-                    ReturnCode.SQL_ERROR.getMessage(),
+            resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
+                    ReturnMsg.SQL_ERROR.getMessage(),
                     e.getMessage());
         }
         return resultMessage;

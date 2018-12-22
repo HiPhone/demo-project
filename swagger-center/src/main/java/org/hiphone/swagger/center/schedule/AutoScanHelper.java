@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.swagger.center.constants.Constant;
+import org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO;
 import org.hiphone.swagger.center.service.ApiBackendService;
+import org.hiphone.swagger.center.service.StandardCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,9 @@ public class AutoScanHelper {
     @Autowired
     private ApiBackendService apiBackendService;
 
+    @Autowired
+    private StandardCheckService standardCheckService;
+
     private List<String> dbServiceNames = new ArrayList<>();
     private String[] eurekaUrls = null;
 
@@ -58,6 +63,48 @@ public class AutoScanHelper {
             log.warn("One eureka node is down! the node is {}", eurekaUrl);
         }
         return getApplicationNameList(eurekaApplicationJson);
+    }
+
+    /**
+     * 更新数据库中的swagger api-docs信息
+     * @param swaggerApiDocsMap swagger api-docs对应的map
+     */
+    public boolean commitChangesToDatabase(Map<String, JSONObject> swaggerApiDocsMap) {
+        swaggerApiDocsMap.forEach((k, v) -> {
+            int notStandardNum = standardCheckService.getNotStandardNum(v);
+            if (notStandardNum != -1) {
+                SwaggerApiDocsDTO apiDocsDTO = new SwaggerApiDocsDTO();
+                apiDocsDTO.setNotStandardNum(notStandardNum);
+                apiDocsDTO.setServiceName(k);
+                apiDocsDTO.setSwaggerApiDocs(v);
+                //如果数据库中存在key，取出数据库中的api-docs
+                if (dbServiceNames.contains(k)) {
+                    JSONObject dbApiDocs = apiBackendService.queryApiDocByServiceName(k);
+                    if (!dbApiDocs.equals(v)) {
+                        try {
+                            apiDocsDTO.setUpdateTime(new Date(System.currentTimeMillis()));
+                            apiBackendService.updateApiInfo(apiDocsDTO);
+                            log.info("Complete updating apiDocs which name is {}", k);
+                        } catch (Exception e) {
+                            log.warn("The operation to database get error! please check it", e);
+                        }
+                    } else {
+                        log.info("The new api-docs equals to database's, stop to commit it");
+                    }
+                } else {
+                    //数据库中不存在该api-docs，插入这条新数据
+                    try {
+                        apiBackendService.insertApiInfo(apiDocsDTO);
+                        log.info("Insert a new api-docs record success, service id is {}", k);
+                    } catch (Exception e) {
+                        log.warn("The operation to database get error! please check it", e);
+                    }
+                }
+            } else {
+                log.info("The swagger api-docs is not standard! service id is {}, stop commit it to database", k);
+            }
+        });
+        return true;
     }
 
 
@@ -150,7 +197,4 @@ public class AutoScanHelper {
         return swaggerApiDocsMap;
     }
 
-    public void commitChangesToDatabase(Map<String, JSONObject> swaggerApiDocsMap) {
-
-    }
 }
