@@ -29,7 +29,7 @@ public interface SwaggerCommonMapper {
      * @param serviceName 服务名称
      * @return service对应的api-docs
      */
-    String querySwaggerDocsByServiceName(@Param("serviceName") String serviceName);
+    JSONObject querySwaggerDocsByServiceName(@Param("serviceName") String serviceName);
 
     /**
      * 向数据库中添加swagger api-docs

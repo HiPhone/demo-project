@@ -43,7 +43,7 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     public JSONObject queryApiDocByServiceName(String serviceName) {
         JSONObject apiDocs = null;
         try {
-            apiDocs = swaggerCommonMapper.querySwaggerDocsByServiceId(serviceId);
+            apiDocs = swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName);
         } catch (Exception e) {
             log.warn("The operation to database get error! {}", e);
         }
@@ -54,7 +54,7 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     public boolean insertApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO) {
         try {
             swaggerCommonMapper.insertSwaggerApiInfo(swaggerApiDocsDTO);
-            return true
+            return true;
         } catch (Exception e) {
             log.warn("The operation to database get error! {}", e);
         }

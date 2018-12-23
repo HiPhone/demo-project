@@ -70,7 +70,7 @@ public class DataSourceConfig {
 
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(username);
-        dataSource.setPassword(EncryptUtil.decryptStringByBase64(password, Constant.BASE64_KEY));
+        dataSource.setPassword(EncryptUtil.decryptStringByBase64(password));
         dataSource.setDbType(dbType);
         dataSource.setDriverClassName(driverClassName);
 

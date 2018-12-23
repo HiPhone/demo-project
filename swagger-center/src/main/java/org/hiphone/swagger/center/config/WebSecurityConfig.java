@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/echo-test").permitAll()
+                .antMatchers("/front/**").permitAll()
                 //指定能访问接口的单个角色
                 .antMatchers( "/admin/**").hasRole("ADMIN")
                 //指定能访问接口的多个角色
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successForwardUrl("/")
                 .permitAll()
-                .and()
+                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())  //将原生返回的登陆界面以json形式返回，方便前端后分离，注释这行变回原生
                 .and()
                 .logout()

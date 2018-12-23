@@ -3,22 +3,22 @@
 <mapper namespace="org.hiphone.swagger.center.mapper.UserMapper">
     <resultMap id="userResultMap" type="org.hiphone.swagger.center.entitys.UserDTO">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="role" property="role" jdbcType="INTEGER"/>
-        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
-        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="ROLE" property="role" jdbcType="INTEGER"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="login_info">
-        id, login_name, password, role, create_by, create_time, update_by, update_time
+        id, LOGIN_NAME, PASSWORD, ROLE, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
     </sql>
 
     <select id="getUserByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
         SELECT
         <include refid="login_info"/>
-        FROM user_account WHERE login_name = #{loginName, jdbcType=VARCHAR}
+        FROM user_account WHERE LOGIN_NAME = #{loginName, jdbcType=VARCHAR}
     </select>
 </mapper>

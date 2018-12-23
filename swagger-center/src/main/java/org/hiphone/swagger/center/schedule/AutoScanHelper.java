@@ -76,7 +76,7 @@ public class AutoScanHelper {
                 SwaggerApiDocsDTO apiDocsDTO = new SwaggerApiDocsDTO();
                 apiDocsDTO.setNotStandardNum(notStandardNum);
                 apiDocsDTO.setServiceName(k);
-                apiDocsDTO.setSwaggerApiDocs(v);
+                apiDocsDTO.setSwaggerApiDocs(v.toJSONString());
                 //如果数据库中存在key，取出数据库中的api-docs
                 if (dbServiceNames.contains(k)) {
                     JSONObject dbApiDocs = apiBackendService.queryApiDocByServiceName(k);

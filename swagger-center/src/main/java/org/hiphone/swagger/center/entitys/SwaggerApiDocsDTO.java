@@ -1,5 +1,6 @@
 package org.hiphone.swagger.center.entitys;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +26,7 @@ public class SwaggerApiDocsDTO implements Serializable {
     private String swaggerServiceUrl;
 
     @ApiModelProperty(value = "微服务的api-docs", name = "swaggerApiDocs")
-    private JSONObject swaggerApiDocs;
+    private String swaggerApiDocs;
 
     @ApiModelProperty(value = "对接不规范的数量", name = "notStandardNum")
     private Integer notStandardNum;

@@ -3,7 +3,7 @@
 <mapper namespace="org.hiphone.swagger.center.mapper.SwaggerCommonMapper">
     <resultMap id="swaggerApiResultMap" type="org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO">
         <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR"/>
-        <result column="API_DOCS" property="swaggerApiDocs" jdbcType="JSON"/>
+        <result column="API_DOCS" property="swaggerApiDocs" jdbcType="VARCHAR"/>
         <result column="NOT_STANDARD_NUM" property="notStandardNum" jdbcType="INTEGER"/>
         <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
@@ -15,13 +15,13 @@
         SERVICE_NAME, API_DOCS, NOT_STANDARD_NUM
     </sql>
 
-    <select id="isInfoExist" parameterMap="java.lang.String" resultType="java.lang.String">
+    <select id="isInfoExist" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
         SERVICE_NAME
         FROM swagger_api WHERE SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}
     </select>
     
-    <select id="queryAllServiceNames" resultType="java.util.String">
+    <select id="queryAllServiceNames" resultType="java.lang.String">
         SELECT SERVICE_NAME FROM swagger_api;
     </select>
 
@@ -43,7 +43,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="serviceName != null">#{serviceName, jdbcType=VARCHAR}, </if>
-            <if test="swaggerApiDocs != null">#{swaggerApiDocs, jdbcType=JSON}, </if>
+            <if test="swaggerApiDocs != null">#{swaggerApiDocs, jdbcType=VARCHAR}, </if>
             <if test="notStandardNum != null">#{notStandardNum, jdbcType=INTEGER}, </if>
             <if test="createBy != null">#{createBy, jdbcType=VARCHAR}, </if>
             <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP}, </if>
@@ -56,7 +56,7 @@
       UPDATE swagger_api
       <set>
           <if test="serviceName != null">SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}, </if>
-          <if test="swaggerApiDocs != null">API_DOCS = #{swaggerApiDocs, jdbcType=JSON}, </if>
+          <if test="swaggerApiDocs != null">API_DOCS = #{swaggerApiDocs, jdbcType=VARCHAR}, </if>
           <if test="notStandardNum != null">NOT_STANDARD_NUM = #{notStandardNum, jdbcType=INTEGER}, </if>
           <if test="updateBy != null">#{updateBy, jdbcType=VARCHAR}, </if>
           <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP}, </if>

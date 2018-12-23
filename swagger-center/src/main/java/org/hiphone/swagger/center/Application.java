@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * @author HiPhone
  */
-@EnableScheduling
-@EnableDiscoveryClient
+//@EnableScheduling
+//@EnableDiscoveryClient
 @MapperScan("org.hiphone.swagger.center.mapper")
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 public class Application {

@@ -1,5 +1,6 @@
 package org.hiphone.swagger.center.config;
 
+import org.hiphone.swagger.center.constants.Constant;
 import org.hiphone.swagger.center.utils.EncryptUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -10,7 +11,7 @@ public class PasswordEncode implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence charSequence) {
-        return EncryptUtil.encryptStringByBase64(charSequence.toString(), null);
+        return EncryptUtil.encryptStringByBase64(charSequence.toString());
     }
 
     @Override
