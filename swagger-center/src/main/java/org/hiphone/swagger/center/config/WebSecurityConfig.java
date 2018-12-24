@@ -16,7 +16,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @author HiPhone
  */
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successForwardUrl("/")
                 .permitAll()
-                 .and()
+                .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())  //将原生返回的登陆界面以json形式返回，方便前端后分离，注释这行变回原生
                 .and()
                 .logout()
