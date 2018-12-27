@@ -40,8 +40,8 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     }
 
     @Override
-    public JSONObject queryApiDocByServiceName(String serviceName) {
-        JSONObject apiDocs = null;
+    public String queryApiDocByServiceName(String serviceName) {
+        String apiDocs = null;
         try {
             apiDocs = swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName);
         } catch (Exception e) {

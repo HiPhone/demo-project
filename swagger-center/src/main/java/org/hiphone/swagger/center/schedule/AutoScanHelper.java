@@ -69,7 +69,7 @@ public class AutoScanHelper {
      * 更新数据库中的swagger api-docs信息
      * @param swaggerApiDocsMap swagger api-docs对应的map
      */
-    public boolean commitChangesToDatabase(Map<String, JSONObject> swaggerApiDocsMap) {
+    public void commitChangesToDatabase(Map<String, JSONObject> swaggerApiDocsMap) {
         swaggerApiDocsMap.forEach((k, v) -> {
             int notStandardNum = standardCheckService.getNotStandardNum(v);
             if (notStandardNum != -1) {
@@ -79,8 +79,8 @@ public class AutoScanHelper {
                 apiDocsDTO.setSwaggerApiDocs(v.toJSONString());
                 //如果数据库中存在key，取出数据库中的api-docs
                 if (dbServiceNames.contains(k)) {
-                    JSONObject dbApiDocs = apiBackendService.queryApiDocByServiceName(k);
-                    if (!dbApiDocs.equals(v)) {
+                    String dbApiDocs = apiBackendService.queryApiDocByServiceName(k);
+                    if (!dbApiDocs.equals(v.toJSONString())) {
                         try {
                             apiDocsDTO.setUpdateTime(new Date(System.currentTimeMillis()));
                             apiBackendService.updateApiInfo(apiDocsDTO);
@@ -89,7 +89,7 @@ public class AutoScanHelper {
                             log.warn("The operation to database get error! please check it", e);
                         }
                     } else {
-                        log.info("The new api-docs equals to database's, stop to commit it");
+                        log.info("The new api-docs of {} equals to database's, stop to commit it", k);
                     }
                 } else {
                     //数据库中不存在该api-docs，插入这条新数据
@@ -104,7 +104,6 @@ public class AutoScanHelper {
                 log.info("The swagger api-docs is not standard! service id is {}, stop commit it to database", k);
             }
         });
-        return true;
     }
 
 

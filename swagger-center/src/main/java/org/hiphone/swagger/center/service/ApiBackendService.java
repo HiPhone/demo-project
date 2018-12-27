@@ -28,7 +28,7 @@ public interface ApiBackendService {
      * @param serviceName 服务的名称
      * @return 对应的swagger api-docs
      */
-    JSONObject queryApiDocByServiceName(String serviceName);
+    String queryApiDocByServiceName(String serviceName);
 
     /**
      * 在数据库中新增一条swagger api-docs

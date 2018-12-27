@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 /**
  * @author HiPhone
  */
-//@EnableScheduling
-//@EnableDiscoveryClient
+@EnableScheduling
+@EnableDiscoveryClient
 @EnableWebSecurity
 @MapperScan("org.hiphone.swagger.center.mapper")
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})

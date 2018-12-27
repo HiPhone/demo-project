@@ -19,7 +19,7 @@ public class ApiAutoUpdater {
     @Autowired
     private AutoScanHelper autoScanHelper;
 
-    @Scheduled(cron = "0 0/60 * * * ?")
+    @Scheduled(fixedDelay = 100000)
     public void autoScan() {
 
         log.info("Starting to scan the swagger api-doc by eureka......");

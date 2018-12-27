@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/front/**").permitAll()
+                .antMatchers(new String[] {"/echo-test", "/v2/api-docs"}).permitAll()
                 //指定能访问接口的单个角色
                 .antMatchers( "/admin/**").hasRole("ADMIN")
                 //指定能访问接口的多个角色
