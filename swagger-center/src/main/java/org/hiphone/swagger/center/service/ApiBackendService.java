@@ -1,7 +1,6 @@
 package org.hiphone.swagger.center.service;
 
-import com.alibaba.fastjson.JSONObject;
-import org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO;
+import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
 
 import java.util.List;
 
@@ -35,13 +34,13 @@ public interface ApiBackendService {
      * @param swaggerApiDocsDTO api info
      * @return true or false
      */
-    boolean insertApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO);
+    boolean insertApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO);
 
     /**
      * 更新数据库中的api信息
      * @param swaggerApiDocsDTO api info
      * @return true or false
      */
-    boolean updateApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO);
+    boolean updateApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO);
 
 }

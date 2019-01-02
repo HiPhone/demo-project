@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.swagger.center.constants.Constant;
-import org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO;
+import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
 import org.hiphone.swagger.center.service.ApiBackendService;
 import org.hiphone.swagger.center.service.StandardCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ public class AutoScanHelper {
         swaggerApiDocsMap.forEach((k, v) -> {
             int notStandardNum = standardCheckService.getNotStandardNum(v);
             if (notStandardNum != -1) {
-                SwaggerApiDocsDTO apiDocsDTO = new SwaggerApiDocsDTO();
+                SwaggerApiDocsDto apiDocsDTO = new SwaggerApiDocsDto();
                 apiDocsDTO.setNotStandardNum(notStandardNum);
                 apiDocsDTO.setServiceName(k);
                 apiDocsDTO.setSwaggerApiDocs(v.toJSONString());

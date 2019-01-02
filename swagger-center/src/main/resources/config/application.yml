@@ -27,7 +27,7 @@ mybatis:
   type-aliases-package: classpath*:org/hiphone/swagger/center/entitys/*
 eureka:
   client:
-    enabled: true
+    enabled: false
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
@@ -35,3 +35,5 @@ eureka:
 bean:
   check: false
   white-list: Timestamp
+server:
+  port: 8082

@@ -33,7 +33,7 @@ public class StandardCheckServiceImpl implements StandardCheckService {
         int notStandardNum = 0;
         JSONObject infoObj = swaggerApiDocs.getJSONObject(Constant.API_INFO);
         JSONArray tagsArray = swaggerApiDocs.getJSONArray(Constant.API_TAGS);
-        JSONObject pathObj = swaggerApiDocs.getJSONObject(Constant.API_PATHs);
+        JSONObject pathObj = swaggerApiDocs.getJSONObject(Constant.API_PATH);
         JSONObject definitionObj = null;
 
         if (infoObj != null) {

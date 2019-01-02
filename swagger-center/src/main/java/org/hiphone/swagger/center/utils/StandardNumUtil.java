@@ -2,6 +2,7 @@ package org.hiphone.swagger.center.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.hiphone.swagger.center.constants.Constant;
 import org.springframework.util.StringUtils;
 
 import java.util.Set;
@@ -11,12 +12,6 @@ import java.util.Set;
  */
 public class StandardNumUtil {
 
-    private static final String CONTACT = "contact";
-    private static final String URL = "url";
-    private static final String NAME = "name";
-    private static final String EMAIL = "email";
-    private static final String DESCRIPTION = "description";
-    private static final String TITLE = "title";
     private static final String ERROR_PATH = "/error";
     private static final String PROPERTIES = "properties";
 
@@ -29,19 +24,19 @@ public class StandardNumUtil {
        int sum = 0;
 
        //检查info中的contact部分
-        JSONObject contact = infoObj.getJSONObject(CONTACT);
+        JSONObject contact = infoObj.getJSONObject(Constant.CONTACT);
         if (contact == null) {
             return -1;
         } else {
             //检查contact中的数据
-            if (StringUtils.isEmpty(contact.getString(NAME))) { sum++; }
-            if (StringUtils.isEmpty(contact.getString(URL))) { sum++; }
-            if (StringUtils.isEmpty(contact.getString(EMAIL))) { sum++; }
+            if (StringUtils.isEmpty(contact.getString(Constant.NAME))) { sum++; }
+            if (StringUtils.isEmpty(contact.getString(Constant.URL))) { sum++; }
+            if (StringUtils.isEmpty(contact.getString(Constant.EMAIL))) { sum++; }
         }
         //检查info中的description
-        if (StringUtils.isEmpty(infoObj.getString(DESCRIPTION))) { sum++; }
+        if (StringUtils.isEmpty(infoObj.getString(Constant.DESCRIPTION))) { sum++; }
         //检查info中的title
-        if (StringUtils.isEmpty(infoObj.getString(TITLE))) { sum++; }
+        if (StringUtils.isEmpty(infoObj.getString(Constant.TITLE))) { sum++; }
         return sum;
     }
 
@@ -55,8 +50,8 @@ public class StandardNumUtil {
 
         for (Object t : tagsArray) {
             JSONObject tagsObj = (JSONObject) t;
-            String description = tagsObj.getString(DESCRIPTION).toLowerCase().replace(" ", "-");
-            if (description.equals(tagsObj.getString(NAME))) { sum++; }
+            String description = tagsObj.getString(Constant.DESCRIPTION).toLowerCase().replace(" ", "-");
+            if (description.equals(tagsObj.getString(Constant.NAME))) { sum++; }
         }
         return sum;
     }
@@ -105,7 +100,7 @@ public class StandardNumUtil {
                 } else {
                     for (String s : props.keySet()) {
                         JSONObject each  = props.getJSONObject(s);
-                        if (each.getString(DESCRIPTION) == null) {
+                        if (each.getString(Constant.DESCRIPTION) == null) {
                             sum++;
                         }
                     }

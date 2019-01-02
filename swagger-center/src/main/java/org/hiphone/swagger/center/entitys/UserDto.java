@@ -15,9 +15,9 @@ import java.sql.Date;
  */
 @Getter
 @Setter
-@ApiModel(value = "UserDTO", description = "用户信息封装数据传输类")
+@ApiModel(value = "UserDto", description = "用户信息封装数据传输类")
 @JSONType(orders = {"id" , "loginName", "password", "role", "createBy", "createBy", "createTime", "updateBy", "updateTime"})
-public class UserDTO implements Serializable {
+public class UserDto implements Serializable {
 
     private static final long serialVersionUID = -2221337494917385389L;
 
@@ -47,7 +47,7 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "UserDto{" +
                 "id=" + id +
                 ", loginName='" + loginName + '\'' +
                 ", password='" + password + '\'' +

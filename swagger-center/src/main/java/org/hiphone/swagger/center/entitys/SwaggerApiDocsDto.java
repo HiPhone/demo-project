@@ -16,7 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ApiModel(value = "SwaggerApiDTO", description = "Api的封装类")
-public class SwaggerApiDocsDTO implements Serializable {
+public class SwaggerApiDocsDto implements Serializable {
 
     private static final long serialVersionUID = -8012571777767128070L;
     @ApiModelProperty(value = "微服务的服务名称", name = "serviceName")
@@ -46,7 +46,7 @@ public class SwaggerApiDocsDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "SwaggerApiDocsDTO{" +
+        return "SwaggerApiDocsDto{" +
                 "serviceName='" + serviceName + '\'' +
                 ", swaggerServiceUrl='" + swaggerServiceUrl + '\'' +
                 ", swaggerApiDocs=" + swaggerApiDocs +

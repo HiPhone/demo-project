@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.hiphone.swagger.center.mapper.SwaggerCommonMapper">
-    <resultMap id="swaggerApiResultMap" type="org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO">
+    <resultMap id="swaggerApiResultMap" type="org.hiphone.swagger.center.entitys.SwaggerApiDocsDto">
         <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR"/>
         <result column="API_DOCS" property="swaggerApiDocs" jdbcType="VARCHAR"/>
         <result column="NOT_STANDARD_NUM" property="notStandardNum" jdbcType="INTEGER"/>
@@ -30,7 +30,7 @@
         FROM swagger_api WHERE SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertSwaggerApiInfo" parameterType="org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO">
+    <insert id="insertSwaggerApiInfo" parameterType="org.hiphone.swagger.center.entitys.SwaggerApiDocsDto">
         INSERT INTO swagger_api
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="serviceName != null">SERVICE_NAME, </if>
@@ -52,7 +52,7 @@
         </trim>
     </insert>
 
-    <update id="updateApiInfo" parameterType="org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO">
+    <update id="updateApiInfo" parameterType="org.hiphone.swagger.center.entitys.SwaggerApiDocsDto">
       UPDATE swagger_api
       <set>
           <if test="serviceName != null">SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}, </if>

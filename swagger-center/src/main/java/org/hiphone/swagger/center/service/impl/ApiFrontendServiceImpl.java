@@ -1,5 +1,11 @@
 package org.hiphone.swagger.center.service.impl;
 
+import com.alibaba.druid.support.json.JSONParser;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.swagger.center.constants.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
@@ -8,12 +14,21 @@ import org.hiphone.swagger.center.service.ApiFrontendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author HiPHone
  */
 @Slf4j
 @Service
 public class ApiFrontendServiceImpl implements ApiFrontendService {
+
+    private static final String NAME = "name";
+    private static final String TITLE = "title";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private SwaggerCommonMapper swaggerCommonMapper;
@@ -24,7 +39,7 @@ public class ApiFrontendServiceImpl implements ApiFrontendService {
         try {
             resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
                     ReturnMsg.SUCCESS.getMessage(),
-                    swaggerCommonMapper.queryAllServiceNames());
+                    fillDataWithName(swaggerCommonMapper.queryAllServiceNames()));
         } catch (Exception e) {
             log.warn("The operation to database get error!", e);
             resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
@@ -40,7 +55,7 @@ public class ApiFrontendServiceImpl implements ApiFrontendService {
         try {
             resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
                     ReturnMsg.SUCCESS.getMessage(),
-                    swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName));
+                    objectMapper.readValue(swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName), JSONObject.class));
         } catch (Exception e) {
             log.warn("The operation to database get error!", e);
             resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
@@ -48,5 +63,21 @@ public class ApiFrontendServiceImpl implements ApiFrontendService {
                     e.getMessage());
         }
         return resultMessage;
+    }
+
+    /**
+     * 修饰serviceName，方便前端处理
+     * @param serviceNameList 数据库中获取的服务名称的列表
+     * @return 修饰之后的数据
+     */
+    private List<Map<String, Object>> fillDataWithName(List<String> serviceNameList) {
+        List<Map<String, Object>> result = new LinkedList<>();
+        for (int i = 1; i <= serviceNameList.size(); i++) {
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put(NAME, i);
+            dataMap.put(TITLE, serviceNameList.get(i - 1));
+            result.add(dataMap);
+        }
+        return result;
     }
 }

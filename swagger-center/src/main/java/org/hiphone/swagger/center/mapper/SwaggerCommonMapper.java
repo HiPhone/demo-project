@@ -1,8 +1,7 @@
 package org.hiphone.swagger.center.mapper;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
-import org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO;
+import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
 
 import java.util.List;
 
@@ -36,18 +35,18 @@ public interface SwaggerCommonMapper {
      * @param swaggerApiDocsDTO swaggerApiDTO
      * @return 插入结果
      */
-    Integer insertSwaggerApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO);
+    Integer insertSwaggerApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO);
 
     /**
      * 更新数据库中的api信息
      * @param swaggerApiDocsDTO swagger api 封装类
      * @return 更新结果
      */
-    Integer updateApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO);
+    Integer updateApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO);
 
     /**
      * 获取所有的serviceId及其对应的api-docs
      * @return list
      */
-    List<SwaggerApiDocsDTO> queryAllServiceNamesAndApiDocs();
+    List<SwaggerApiDocsDto> queryAllServiceNamesAndApiDocs();
 }

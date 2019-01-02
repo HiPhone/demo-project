@@ -1,8 +1,7 @@
 package org.hiphone.swagger.center.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.swagger.center.entitys.SwaggerApiDocsDTO;
+import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
 import org.hiphone.swagger.center.mapper.SwaggerCommonMapper;
 import org.hiphone.swagger.center.service.ApiBackendService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     }
 
     @Override
-    public boolean insertApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO) {
+    public boolean insertApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO) {
         try {
             swaggerCommonMapper.insertSwaggerApiInfo(swaggerApiDocsDTO);
             return true;
@@ -62,7 +61,7 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     }
 
     @Override
-    public boolean updateApiInfo(SwaggerApiDocsDTO swaggerApiDocsDTO) {
+    public boolean updateApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO) {
         try {
             swaggerCommonMapper.updateApiInfo(swaggerApiDocsDTO);
             return true;

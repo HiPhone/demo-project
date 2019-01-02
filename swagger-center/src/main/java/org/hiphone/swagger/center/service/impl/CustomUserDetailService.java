@@ -1,7 +1,7 @@
 package org.hiphone.swagger.center.service.impl;
 
 import org.hiphone.swagger.center.constants.Constant;
-import org.hiphone.swagger.center.entitys.UserDTO;
+import org.hiphone.swagger.center.entitys.UserDto;
 import org.hiphone.swagger.center.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +31,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDTO user = userMapper.getUserByLoginName(username);
+        UserDto user = userMapper.getUserByLoginName(username);
         if (user == null) {
             throw new UsernameNotFoundException("user is not found in database!");
         }
