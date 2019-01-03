@@ -31,6 +31,13 @@ public interface SwaggerCommonMapper {
     String querySwaggerDocsByServiceName(@Param("serviceName") String serviceName);
 
     /**
+     * 通过服务名称获取swagger的基础信息
+     * @param serviceName 服务名称
+     * @return 对应的swagger基础信息
+     */
+    SwaggerApiDocsDto querySwaggerInfoByServiceName(@Param("serviceName") String serviceName);
+
+    /**
      * 向数据库中添加swagger api-docs
      * @param swaggerApiDocsDTO swaggerApiDTO
      * @return 插入结果

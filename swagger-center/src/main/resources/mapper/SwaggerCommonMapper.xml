@@ -11,8 +11,8 @@
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="check_standard">
-        SERVICE_NAME, API_DOCS, NOT_STANDARD_NUM
+    <sql id="base_info">
+        API_DOCS, NOT_STANDARD_NUM, UPDATE_TIME
     </sql>
 
     <select id="isInfoExist" parameterType="java.lang.String" resultType="java.lang.String">
@@ -27,6 +27,12 @@
 
     <select id="querySwaggerDocsByServiceName" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT API_DOCS
+        FROM swagger_api WHERE SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}
+    </select>
+
+    <select id="querySwaggerInfoByServiceName" parameterType="java.lang.String" resultMap="swaggerApiResultMap">
+        SELECT
+        <include refid="base_info"/>
         FROM swagger_api WHERE SERVICE_NAME = #{serviceName, jdbcType=VARCHAR}
     </select>
 

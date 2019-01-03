@@ -20,4 +20,11 @@ public interface ApiFrontendService {
      */
     ResultMessage queryApiDocsByServiceName(String serviceName);
 
+    /**
+     * 通过serviceName获取简化的api-docs
+     * @param serviceName 服务的名称
+     * @return 简化之后的结果
+     */
+    ResultMessage querySimplifyApiDocs(String serviceName);
+
 }
