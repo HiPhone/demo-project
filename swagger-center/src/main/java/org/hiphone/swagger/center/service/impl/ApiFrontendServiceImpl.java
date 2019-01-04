@@ -9,6 +9,8 @@ import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
 import org.hiphone.swagger.center.mapper.SwaggerCommonMapper;
 import org.hiphone.swagger.center.service.ApiFrontendService;
 import org.hiphone.swagger.center.service.StandardCheckService;
+import org.hiphone.swagger.center.utils.ParseSwaggerUtil;
+import org.hiphone.swagger.center.utils.StandardDetailsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,20 +38,23 @@ public class ApiFrontendServiceImpl implements ApiFrontendService {
     @Autowired
     private StandardCheckService standardCheckService;
 
-    //TODO
     @Override
     public ResultMessage querySimplifyApiDocs(String serviceName) {
         ResultMessage resultMessage;
         try {
-            Map<String, Object> simlifyApiDocs = new LinkedHashMap<>();
             SwaggerApiDocsDto info = swaggerCommonMapper.querySwaggerInfoByServiceName(serviceName);
             JSONObject apiDocs = objectMapper.readValue(info.getSwaggerApiDocs(), JSONObject.class);
-            simlifyApiDocs.put(HOST, apiDocs.getString(HOST));
-            simlifyApiDocs.put(UPDATE_TIME, info.getUpdateTime());
-            simlifyApiDocs.put(NOT_STANDARD_NUM, standardCheckService.getNotStandardNum(apiDocs));
+            Map<String, Object> simplifyApiDocs = ParseSwaggerUtil.parseSwaggerJson(apiDocs);
+
+            simplifyApiDocs.put(HOST, apiDocs.getString(HOST));
+            simplifyApiDocs.put(UPDATE_TIME, info.getUpdateTime());
+            simplifyApiDocs.put(NOT_STANDARD_NUM, standardCheckService.getNotStandardNum(apiDocs));
+            simplifyApiDocs.put(API_SUM, ParseSwaggerUtil.countSwaggerApiNum(apiDocs));
+            simplifyApiDocs.put(UN_REST_APIS, StandardDetailsUtil.getUnRestFulApiDetails(apiDocs));
+
             resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
                     ReturnMsg.SUCCESS.getMessage(),
-                    simlifyApiDocs);
+                    simplifyApiDocs);
         } catch (Exception e) {
             log.warn("The operation to database get error!", e);
             resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),

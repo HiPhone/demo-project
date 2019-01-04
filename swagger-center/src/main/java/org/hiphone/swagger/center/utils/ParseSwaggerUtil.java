@@ -6,9 +6,7 @@ import org.hiphone.swagger.center.constants.Constant;
 import org.hiphone.swagger.center.entitys.ApiParamVo;
 import org.hiphone.swagger.center.entitys.SimplifyApiVo;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author HiPhone
@@ -47,8 +45,8 @@ public class ParseSwaggerUtil {
      * @param swaggerJson swagger json
      * @return 解析的结果
      */
-    public static JSONObject parseSwaggerJson(JSONObject swaggerJson) {
-        JSONObject result = new JSONObject();
+    public static Map<String, Object> parseSwaggerJson(JSONObject swaggerJson) {
+        Map<String, Object> result = new LinkedHashMap<>();
 
         List<SimplifyApiVo> resultList = new LinkedList<>();
         JSONArray tagsArray = swaggerJson.getJSONArray(TAGS);
@@ -237,5 +235,27 @@ public class ParseSwaggerUtil {
         }
         parseContract(swaggerJson.getJSONObject(Constant.CONTACT), infoObj);
         return infoObj;
+    }
+
+    /**
+     * 计算服务swagger有效的api数量
+     * @param apiDocs api-docs
+     * @return 有效api的数目
+     */
+    public static int countSwaggerApiNum(JSONObject apiDocs) {
+        int sum = 0;
+        JSONObject paths = apiDocs.getJSONObject(Constant.API_PATH);
+        if (paths == null) {
+            return 0;
+        }
+        for (String s : paths.keySet()) {
+            JSONObject tmp = paths.getJSONObject(s);
+            if (tmp.keySet().size() == 7) {
+                sum++;
+            } else {
+                sum += tmp.keySet().size();
+            }
+        }
+        return sum;
     }
 }
