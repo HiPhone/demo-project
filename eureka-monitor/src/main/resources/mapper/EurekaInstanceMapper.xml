@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hiphone.eureka.monitor.mapper">
+    <resultMap id="instanceResultMap" type="org.hiphone.eureka.monitor.entitys.ServiceInstanceDto">
+        <id column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR"/>
+        <id column="CLUSTER_ID" property="clusterId" javaType="VARCHAR"/>
+        <result column="APPLICATION_NAME" property="applicationName" javaType="VARCHAR"/>
+        <result column="HOST_NAME" property="hostname" javaType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" javaType="VARCHAR"/>
+        <result column="SERVICE_PORT" property="servicePort" javaType="INTEGER"/>
+        <result column="CURRENT_STATE" property="currentState" javaType="INTEGER"/>
+        <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="DOWN_TIME" property="downTime" javaType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="base_info">
+        INSTANCE_ID, CLUSTER_ID, APPLICATION_NAME, HOST_NAME, IP_ADDRESS, SERVICE_PORT, CURRENT_STATE, REGISTER_TIME, DOWN_TIME
+    </sql>
+
+    <select id="queryInstancesByStateAndClusterId"  resultMap="instanceResultMap">
+        SELECT
+        <include refid="base_info"/>
+        FROM eureka_instances WHERE CURRENT_STATE = #{state} and CLUSTER_ID = #{clusterId};
+    </select>
+</mapper>
