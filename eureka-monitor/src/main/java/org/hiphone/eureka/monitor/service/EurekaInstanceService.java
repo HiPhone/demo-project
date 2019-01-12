@@ -1,6 +1,6 @@
 package org.hiphone.eureka.monitor.service;
 
-import org.hiphone.eureka.monitor.entitys.ServiceInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 
 import java.util.Set;
 
@@ -15,5 +15,5 @@ public interface EurekaInstanceService  {
      * @param clusterId 集群id
      * @return 该状态的集合
      */
-    Set<ServiceInstanceDto> queryInstancesByStateAndClusterId(int state, String clusterId);
+    Set<ApplicationInstanceDto> queryInstancesByStateAndClusterId(int state, String clusterId);
 }

@@ -5,7 +5,7 @@ import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.monitor.config.EurekaDataCenterConfig;
 import org.hiphone.eureka.monitor.constants.Constant;
-import org.hiphone.eureka.monitor.entitys.ServiceInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.hiphone.eureka.monitor.service.EurekaInstanceService;
 import org.hiphone.eureka.monitor.utils.EurekaClientUtil;
 import org.quartz.JobExecutionContext;
@@ -27,7 +27,7 @@ public class EurekaStatusChecker implements BaseJob {
     /**
      * 存放缓存信息的map
      */
-    private Map<String ,Set<ServiceInstanceDto>> clusterInstanceCacheMap = new ConcurrentHashMap<>();
+    private Map<String ,Set<ApplicationInstanceDto>> clusterInstanceCacheMap = new ConcurrentHashMap<>();
 
     @Autowired
     private EurekaDataCenterConfig eurekaDataCenterConfig;
@@ -50,9 +50,9 @@ public class EurekaStatusChecker implements BaseJob {
             JSONObject eurekaJson = eurekaClient.getEurekaDataJson(clusterId, clusterUrls);
 
             if (eurekaJson != null) {
-                Set<ServiceInstanceDto> eurekaInstanceSet = eurekaClient.getEurekaServiceInstanceSet(clusterId, eurekaJson);
+                Set<ApplicationInstanceDto> eurekaInstanceSet = eurekaClient.getEurekaServiceInstanceSet(clusterId, eurekaJson);
                 //比较缓存与eurekaInstanceSet的差异
-                Set<ServiceInstanceDto> instanceDifferenceSet = checkInstances(clusterId, eurekaInstanceSet);
+                Set<ApplicationInstanceDto> instanceDifferenceSet = checkInstances(clusterId, eurekaInstanceSet);
 
                 //TODO application
             } else {
@@ -68,9 +68,9 @@ public class EurekaStatusChecker implements BaseJob {
      * @param eurekaInstanceSet eurekaInstanceSet
      * @return 新旧数据的不同
      */
-    private Set<ServiceInstanceDto> checkInstances(String clusterId, Set<ServiceInstanceDto> eurekaInstanceSet) {
-        Set<ServiceInstanceDto> instanceDifferenceSet = new LinkedHashSet<>();
-        Set<ServiceInstanceDto> oldInstanceSet = clusterInstanceCacheMap.get(clusterId);
+    private Set<ApplicationInstanceDto> checkInstances(String clusterId, Set<ApplicationInstanceDto> eurekaInstanceSet) {
+        Set<ApplicationInstanceDto> instanceDifferenceSet = new LinkedHashSet<>();
+        Set<ApplicationInstanceDto> oldInstanceSet = clusterInstanceCacheMap.get(clusterId);
 
         if (oldInstanceSet == null) {
             oldInstanceSet = eurekaInstanceService.queryInstancesByStateAndClusterId(Constant.STATE_UP, clusterId);
@@ -78,10 +78,10 @@ public class EurekaStatusChecker implements BaseJob {
         log.info("The old instances data of cluster {} initialize success! the size is {}", clusterId, oldInstanceSet.size());
 
         //eurekaInstances - oldInstances = upInstances
-        Set<ServiceInstanceDto> upInstancesSet = Sets.difference(eurekaInstanceSet, oldInstanceSet);
+        Set<ApplicationInstanceDto> upInstancesSet = Sets.difference(eurekaInstanceSet, oldInstanceSet);
 
         //oldInstance - eurekaInstances = downInstances
-        Set<ServiceInstanceDto> downInstancesSet = Sets.difference(oldInstanceSet, eurekaInstanceSet);
+        Set<ApplicationInstanceDto> downInstancesSet = Sets.difference(oldInstanceSet, eurekaInstanceSet);
 
         downInstancesSet.forEach(d -> {
             d.setCurrentState(1);

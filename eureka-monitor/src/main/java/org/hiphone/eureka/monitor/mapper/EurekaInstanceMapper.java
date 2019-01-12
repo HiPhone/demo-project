@@ -1,7 +1,7 @@
 package org.hiphone.eureka.monitor.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.hiphone.eureka.monitor.entitys.ServiceInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 
 import java.util.Set;
 
@@ -16,5 +16,5 @@ public interface EurekaInstanceMapper {
      * @param clusterId 集群id
      * @return instances集合
      */
-    Set<ServiceInstanceDto> queryInstancesByState(@Param("state") int state, String clusterId);
+    Set<ApplicationInstanceDto> queryInstancesByState(@Param("state") int state, String clusterId);
 }

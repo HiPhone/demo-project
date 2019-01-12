@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.hiphone.eureka.monitor.mapper">
-    <resultMap id="instanceResultMap" type="org.hiphone.eureka.monitor.entitys.ServiceInstanceDto">
+    <resultMap id="instanceResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto">
         <id column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR"/>
         <id column="CLUSTER_ID" property="clusterId" javaType="VARCHAR"/>
         <result column="APPLICATION_NAME" property="applicationName" javaType="VARCHAR"/>

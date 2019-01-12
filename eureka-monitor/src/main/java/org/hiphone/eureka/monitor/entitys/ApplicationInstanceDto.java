@@ -16,8 +16,8 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "ServiceInstanceDto", description = "eureka instance信息的封装类")
-public class ServiceInstanceDto implements Serializable {
+@ApiModel(value = "ApplicationInstanceDto", description = "eureka instance信息的封装类")
+public class ApplicationInstanceDto implements Serializable {
 
     private static final long serialVersionUID = 3353406941094995780L;
 
@@ -62,7 +62,7 @@ public class ServiceInstanceDto implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ServiceInstanceDto that = (ServiceInstanceDto) o;
+        ApplicationInstanceDto that = (ApplicationInstanceDto) o;
         return Objects.equal(instanceId, that.instanceId) &&
                 Objects.equal(currentState, that.currentState);
     }

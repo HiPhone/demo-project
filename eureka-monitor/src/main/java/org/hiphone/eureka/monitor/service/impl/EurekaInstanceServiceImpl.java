@@ -1,7 +1,7 @@
 package org.hiphone.eureka.monitor.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.eureka.monitor.entitys.ServiceInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.hiphone.eureka.monitor.mapper.EurekaInstanceMapper;
 import org.hiphone.eureka.monitor.service.EurekaInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class EurekaInstanceServiceImpl implements EurekaInstanceService {
     private EurekaInstanceMapper eurekaInstanceMapper;
 
     @Override
-    public Set<ServiceInstanceDto> queryInstancesByStateAndClusterId(int state, String clusterId) {
+    public Set<ApplicationInstanceDto> queryInstancesByStateAndClusterId(int state, String clusterId) {
         try {
             return eurekaInstanceMapper.queryInstancesByState(state, clusterId);
         } catch (Exception e) {

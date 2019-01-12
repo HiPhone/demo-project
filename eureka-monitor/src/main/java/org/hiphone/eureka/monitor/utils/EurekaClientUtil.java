@@ -3,7 +3,7 @@ package org.hiphone.eureka.monitor.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.eureka.monitor.entitys.ServiceInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -74,11 +74,11 @@ public class EurekaClientUtil {
      * @param eurekaJson eureka的元数据json
      * @return eureka信息封装的类的set
      */
-    public Set<ServiceInstanceDto> getEurekaServiceInstanceSet(String clusterId, JSONObject eurekaJson) {
+    public Set<ApplicationInstanceDto> getEurekaServiceInstanceSet(String clusterId, JSONObject eurekaJson) {
         JSONObject applicationsObj = eurekaJson.getJSONObject(EUREKA_APPLICATIONS);
         JSONArray applicationArray = applicationsObj.getJSONArray(EUREKA_APPLICATION);
 
-        Set<ServiceInstanceDto> eurekaServiceInstanceSet = new LinkedHashSet<>();
+        Set<ApplicationInstanceDto> eurekaServiceInstanceSet = new LinkedHashSet<>();
         //解析eureka的元数据
         for (Object o : applicationArray) {
             JSONObject application = (JSONObject) o;
@@ -88,17 +88,17 @@ public class EurekaClientUtil {
                 JSONObject port = singleInstance.getJSONObject(EUREKA_PORT);
                 JSONObject leaseInfo = singleInstance.getJSONObject(EUREKA_LEASE_INFO);
 
-                ServiceInstanceDto serviceInstanceDto = new ServiceInstanceDto();
-                serviceInstanceDto.setInstanceId(singleInstance.getString(EUREKA_INSTANCE_ID));
-                serviceInstanceDto.setClusterId(clusterId);
-                serviceInstanceDto.setApplicationName(application.getString(EUREKA_NAME));
-                serviceInstanceDto.setHostname(singleInstance.getString(EUREKA_HOSTNAME));
-                serviceInstanceDto.setServicePort(port.getInteger("$"));
-                serviceInstanceDto.setCurrentState(0);
-                serviceInstanceDto.setIpAddress(singleInstance.getString(EUREKA_IPADDRESS));
-                serviceInstanceDto.setRegisterTime(new Date(leaseInfo.getLong(EUREKA_REGISTER_TIME)));
-                serviceInstanceDto.setDownTime(new Date(0));
-                eurekaServiceInstanceSet.add(serviceInstanceDto);
+                ApplicationInstanceDto applicationInstanceDto = new ApplicationInstanceDto();
+                applicationInstanceDto.setInstanceId(singleInstance.getString(EUREKA_INSTANCE_ID));
+                applicationInstanceDto.setClusterId(clusterId);
+                applicationInstanceDto.setApplicationName(application.getString(EUREKA_NAME));
+                applicationInstanceDto.setHostname(singleInstance.getString(EUREKA_HOSTNAME));
+                applicationInstanceDto.setServicePort(port.getInteger("$"));
+                applicationInstanceDto.setCurrentState(0);
+                applicationInstanceDto.setIpAddress(singleInstance.getString(EUREKA_IPADDRESS));
+                applicationInstanceDto.setRegisterTime(new Date(leaseInfo.getLong(EUREKA_REGISTER_TIME)));
+                applicationInstanceDto.setDownTime(new Date(0));
+                eurekaServiceInstanceSet.add(applicationInstanceDto);
             }
         }
         return eurekaServiceInstanceSet;
