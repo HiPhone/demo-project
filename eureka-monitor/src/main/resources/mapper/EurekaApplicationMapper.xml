@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hiphone.eureka.monitor.mapper">
+    <resultMap id="applicationResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationDto">
+        <id column="CLUSTER_ID" property="clusterId" jdbcType="VARCHAR"/>
+        <id column="APPLICATION_NAME" property="applicationName" jdbcType="VARCHAR"/>
+        <result column="UP_NUM" property="upInstanceNum" jdbcType="INTEGER"/>
+        <result column="TOTAL_NUM" property="totalInstanceNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="base_info">
+        CLUSTER_ID, APPLICATION_NAME, UP_NUM, TOTAL_NUM
+    </sql>
+
+    <select id="queryApplicationsByClusterId"  resultMap="applicationResultMap">
+        SELECT
+        <include refid="base_info"/>
+        FROM eureka_applications WHERE CLUSTER_ID = #{clusterId};
+    </select>
+</mapper>

@@ -5,7 +5,9 @@ import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.monitor.config.EurekaDataCenterConfig;
 import org.hiphone.eureka.monitor.constants.Constant;
+import org.hiphone.eureka.monitor.entitys.ApplicationDto;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
+import org.hiphone.eureka.monitor.service.EurekaApplicationService;
 import org.hiphone.eureka.monitor.service.EurekaInstanceService;
 import org.hiphone.eureka.monitor.utils.EurekaClientUtil;
 import org.quartz.JobExecutionContext;
@@ -38,6 +40,9 @@ public class EurekaStatusChecker implements BaseJob {
     @Autowired
     private EurekaInstanceService eurekaInstanceService;
 
+    @Autowired
+    private EurekaApplicationService eurekaApplicationService;
+
     @Override
     public void execute(JobExecutionContext context) {
         log.info("Starting to check the eureka status......");
@@ -53,6 +58,7 @@ public class EurekaStatusChecker implements BaseJob {
                 Set<ApplicationInstanceDto> eurekaInstanceSet = eurekaClient.getEurekaServiceInstanceSet(clusterId, eurekaJson);
                 //比较缓存与eurekaInstanceSet的差异
                 Set<ApplicationInstanceDto> instanceDifferenceSet = checkInstances(clusterId, eurekaInstanceSet);
+                Set<ApplicationDto> applicationDifferenceSet = checkApplications(clusterId, instanceDifferenceSet);
 
                 //TODO application
             } else {
@@ -63,7 +69,7 @@ public class EurekaStatusChecker implements BaseJob {
     }
 
     /**
-     * 对比新数据与旧数据，返回他们之间的不同
+     * 对比instance新数据与旧数据，返回他们之间的不同
      * @param clusterId 集群id
      * @param eurekaInstanceSet eurekaInstanceSet
      * @return 新旧数据的不同
@@ -91,4 +97,25 @@ public class EurekaStatusChecker implements BaseJob {
         instanceDifferenceSet.addAll(downInstancesSet);
         return instanceDifferenceSet;
     }
+
+    /**
+     * 对面application新旧数据，返回差异
+     * @param clusterId 集群id
+     * @param differentInstanceSet instance的差异集合
+     * @return application的差异集合
+     */
+    private Set<ApplicationDto> checkApplications(String clusterId, Set<ApplicationInstanceDto> differentInstanceSet) {
+        Set<ApplicationDto> newApplicationsSet = new LinkedHashSet<>();
+        differentInstanceSet.forEach(instance -> {
+            ApplicationDto application = new ApplicationDto();
+            application.setClusterId(clusterId);
+            application.setApplicationName(instance.getApplicationName());
+            newApplicationsSet.add(application);
+        });
+
+        Set<ApplicationDto> oldApplicationsSet = eurekaApplicationService.queryApplicationsByClusterId(clusterId);
+        return Sets.difference(newApplicationsSet, oldApplicationsSet);
+    }
+
+    private void updateDatabase(String clusterId, Set<ApplicationDto> )
 }
