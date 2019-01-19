@@ -15,4 +15,10 @@ public interface EurekaApplicationService {
      * @return application信息
      */
     Set<ApplicationDto> queryApplicationsByClusterId(String clusterId);
+
+    /**
+     * 批量插入applications
+     * @param applications application的set
+     */
+    void batchSaveApplications(Set<ApplicationDto> applications);
 }

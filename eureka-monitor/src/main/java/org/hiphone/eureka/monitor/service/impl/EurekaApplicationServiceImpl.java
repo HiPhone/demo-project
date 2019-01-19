@@ -29,4 +29,13 @@ public class EurekaApplicationServiceImpl implements EurekaApplicationService {
         }
         return new LinkedHashSet<>();
     }
+
+    @Override
+    public void batchSaveApplications(Set<ApplicationDto> applications) {
+        try {
+            eurekaApplicationMapper.batchSaveApplications(applications);
+        } catch (Exception e) {
+            log.error("Database connect get error! please check it: {}", e.getMessage());
+        }
+    }
 }

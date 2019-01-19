@@ -16,4 +16,10 @@ public interface EurekaApplicationMapper {
      * @return application infos
      */
     Set<ApplicationDto> queryApplicationsByClusterId(@Param("clusterId") String clusterId);
+
+    /**
+     * 将applicationDtoSet插入数据库中
+     * @param applicationDtoSet applicationDto Set
+     */
+    void batchSaveApplications(Set<ApplicationDto> applicationDtoSet);
 }
