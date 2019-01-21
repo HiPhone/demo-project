@@ -33,7 +33,7 @@ public class EurekaApplicationServiceImpl implements EurekaApplicationService {
     @Override
     public void batchSaveApplications(Set<ApplicationDto> applications) {
         try {
-            eurekaApplicationMapper.batchSaveApplications(applications);
+            eurekaApplicationMapper.batchInsertApplications(applications);
         } catch (Exception e) {
             log.error("Database connect get error! please check it: {}", e.getMessage());
         }

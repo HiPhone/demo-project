@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hiphone.eureka.monitor.mapper">
+    <resultMap id="historyResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <id column="CLUSTER_ID" property="clusterId" javaType="VARCHAR"/>
+        <result column="APPLICATION_NAME" property="applicationName" javaType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" javaType="VARCHAR"/>
+        <result column="STATE" property="state" javaType="INTEGER"/>
+        <result column="LOG_TIME" property="logTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="base_info">
+        ID, CLUSTER_ID, APPLICATION_NAME, IP_ADDRESS, STATE, LOG_TIME
+    </sql>
+
+    <insert id="insertApplicationHistory" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto">
+        INSERT INTO eureka_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clusterId != null">CLUSTER_ID, </if>
+            <if test="applicationName != null">APPLICATION_NAME, </if>
+            <if test="ipAddress != null">IP_ADDRESS,</if>
+            <if test="state != null">STEATE,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clusterId != null">#{clusterId, jdbcType=VARCHAR}, </if>
+            <if test="applicationName != null">#{applicationName, jdbcType=VARCHAR}, </if>
+            <if test="ipAddress != null">#{ipAddress, jdbcType=VARCHAR}, </if>
+            <if test="state != null">#{state, jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+</mapper>

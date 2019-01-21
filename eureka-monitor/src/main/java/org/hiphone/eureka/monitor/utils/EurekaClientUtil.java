@@ -3,6 +3,7 @@ package org.hiphone.eureka.monitor.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

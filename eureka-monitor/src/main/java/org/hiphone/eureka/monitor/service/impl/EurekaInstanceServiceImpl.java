@@ -29,4 +29,22 @@ public class EurekaInstanceServiceImpl implements EurekaInstanceService {
         }
         return new LinkedHashSet<>();
     }
+
+    @Override
+    public void updateInstanceState(ApplicationInstanceDto instance, Integer newState) {
+        try {
+            eurekaInstanceMapper.updateInstanceState(instance, newState);
+        } catch (Exception e) {
+            log.error("Database connect get error! please check it: {}", e.getMessage());
+        }
+    }
+
+    @Override
+    public void insertOrUpdateDownInstance(ApplicationInstanceDto instance) {
+        try {
+            eurekaInstanceMapper.insertOrUpdateDownInstance(instance);
+        } catch (Exception e) {
+            log.error("Database connect get error! please check it: {}", e.getMessage());
+        }
+    }
 }

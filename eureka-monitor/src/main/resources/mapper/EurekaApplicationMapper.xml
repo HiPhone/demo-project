@@ -15,10 +15,10 @@
     <select id="queryApplicationsByClusterId"  resultMap="applicationResultMap">
         SELECT
         <include refid="base_info"/>
-        FROM eureka_applications WHERE CLUSTER_ID = #{clusterId};
+        FROM eureka_applications WHERE CLUSTER_ID = #{clusterId}
     </select>
 
-    <insert id="batchSaveApplications" parameterType="java.util.Set">
+    <insert id="batchInsertApplications" parameterType="java.util.Set">
         INSERT INTO eureka_applications (CLUSTER_ID, APPLICATION_NAME, UP_NUM, TOTAL_NUM)
         values
         <foreach collection="set" item="application" index="index" separator=",">

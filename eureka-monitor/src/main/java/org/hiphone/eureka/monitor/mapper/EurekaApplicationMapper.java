@@ -21,5 +21,5 @@ public interface EurekaApplicationMapper {
      * 将applicationDtoSet插入数据库中
      * @param applicationDtoSet applicationDto Set
      */
-    void batchSaveApplications(Set<ApplicationDto> applicationDtoSet);
+    void batchInsertApplications(Set<ApplicationDto> applicationDtoSet);
 }
