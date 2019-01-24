@@ -28,10 +28,6 @@ public class CheckHelper {
      */
     private Map<String ,Set<ApplicationInstanceDto>> clusterInstanceCacheMap = new ConcurrentHashMap<>();
 
-    /**
-     * 存放Application缓存信息的map
-     */
-    private Map<String, Set<ApplicationDto>> clusterApplicationCacheMap = new ConcurrentHashMap<>();
 
     @Autowired
     private EurekaInstanceService eurekaInstanceService;
@@ -86,8 +82,7 @@ public class CheckHelper {
             newApplicationsSet.add(application);
         });
 
-        Set<ApplicationDto> oldApplicationsSet = clusterApplicationCacheMap.get(clusterId) == null ?
-                eurekaApplicationService.queryApplicationsByClusterId(clusterId) : clusterApplicationCacheMap.get(clusterId);
+        Set<ApplicationDto> oldApplicationsSet = eurekaApplicationService.queryApplicationsByClusterId(clusterId);
         return Sets.difference(newApplicationsSet, oldApplicationsSet);
     }
 
@@ -141,6 +136,18 @@ public class CheckHelper {
         }
 
         //update application
+        eurekaApplicationService.insertOrUpdateApplicationInfo(differentInstanceSet);
+
+        log.info("Finished Update the database......");
+    }
+
+    /**
+     * 更新缓存信息
+     * @param clusterId 集群id
+     * @param eurekaInstanceSet 从eureka中获取的最新信息
+     */
+    public void updateCache(String clusterId, Set<ApplicationInstanceDto> eurekaInstanceSet) {
+        clusterInstanceCacheMap.put(clusterId, eurekaInstanceSet);
     }
 
     /**

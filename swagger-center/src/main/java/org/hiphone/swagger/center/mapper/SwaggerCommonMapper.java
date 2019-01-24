@@ -10,12 +10,6 @@ import java.util.List;
  */
 public interface SwaggerCommonMapper {
 
-    /**
-     * 通过serviceName判断数据库是否已存在api信息
-     * @param serviceName 服务名称
-     * @return 存在则返回服务名称，不存在则返回null
-     */
-    String isInfoExist(@Param("serviceName") String serviceName);
 
     /**
      * 获取数据库中所有的serviceName

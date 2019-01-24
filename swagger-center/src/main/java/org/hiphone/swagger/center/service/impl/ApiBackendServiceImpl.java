@@ -22,11 +22,6 @@ public class ApiBackendServiceImpl implements ApiBackendService {
     private SwaggerCommonMapper swaggerCommonMapper;
 
     @Override
-    public boolean isApiInfoExist(String serviceName) {
-        return StringUtils.isEmpty(swaggerCommonMapper.isInfoExist(serviceName));
-    }
-
-    @Override
     public List<String> queryAllServiceNames() {
         List<String> serviceNames;
         try {

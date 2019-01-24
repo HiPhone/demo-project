@@ -10,13 +10,6 @@ import java.util.List;
 public interface ApiBackendService {
 
     /**
-     * 判断api信息是否已经存在于数据库中
-     * @param serviceName 服务的名称
-     * @return true or false
-     */
-    boolean isApiInfoExist(String serviceName);
-
-    /**
      * 获取所有已经入库的serviceName
      * @return 所有serviceName的列表
      */

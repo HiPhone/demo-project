@@ -2,6 +2,7 @@ package org.hiphone.eureka.monitor.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.hiphone.eureka.monitor.entitys.ApplicationDto;
+import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 
 import java.util.Set;
 
@@ -22,4 +23,10 @@ public interface EurekaApplicationMapper {
      * @param applicationDtoSet applicationDto Set
      */
     void batchInsertApplications(Set<ApplicationDto> applicationDtoSet);
+
+    /**
+     * 通过instanceSet 插入或者更新对应的application数据
+     * @param instanceSets instance的set
+     */
+    void insertOrUpdateApplicationInfo(Set<ApplicationInstanceDto> instanceSets);
 }

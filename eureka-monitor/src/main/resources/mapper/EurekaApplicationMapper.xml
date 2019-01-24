@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.hiphone.eureka.monitor.mapper">
+<mapper namespace="org.hiphone.eureka.monitor.mapper.EurekaApplicationMapper">
     <resultMap id="applicationResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationDto">
         <id column="CLUSTER_ID" property="clusterId" jdbcType="VARCHAR"/>
         <id column="APPLICATION_NAME" property="applicationName" jdbcType="VARCHAR"/>
@@ -19,13 +19,37 @@
     </select>
 
     <insert id="batchInsertApplications" parameterType="java.util.Set">
-        INSERT INTO eureka_applications (CLUSTER_ID, APPLICATION_NAME, UP_NUM, TOTAL_NUM)
+        INSERT INTO eureka_applications (
+        <include refid="base_info"/>
+        )
         values
         <foreach collection="set" item="application" index="index" separator=",">
-            (#{application.clusterId, jdbcType=VARCHAR}.
+            (#{application.clusterId, jdbcType=VARCHAR},
              #{application.applicationName, jdbcType=VARCHAR},
              #{application.upInstanceNum, jdbcType=INTEGER},
              #{application.totalInstanceNum, jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateApplicationInfo" parameterType="java.util.Set">
+        INSERT INTO eureka_applications (
+        <include refid="base_info"/>
+        )
+        values
+        <foreach collection="set" item="instance" index="index" separator=",">
+            (#{instance.clusterId, jdbcType=VARCHAR},
+             #{instance.applicationName, jdbcType=VARCHAR},
+             1, 1)
+             ON DUPLICATE KEY UPDATE UP_NUM = (
+              SELECT COUNT(*) FROM eureka_instances
+              WHERE CURRENT_STATE = 0 AND CLUSTER_ID = #{instance.clusterId, jdbcType=VARCHAR}
+              AND APPLICATION_NAME = #{instance.applicationName, jdbcType=VARCHAR}
+            ),
+            TOTAL NUM = (
+             SELECT COUNT(*) FROM eureka_instances
+             WHERE CLUSTER_ID = #{instance.clusterId, jdbcType=VARCHAR}
+             AND APPLICATION_NAME = #{instance.applicationName, jdbcType=VARCHAR}
+            )
         </foreach>
     </insert>
 </mapper>
