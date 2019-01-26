@@ -22,11 +22,11 @@ public interface EurekaApplicationMapper {
      * 将applicationDtoSet插入数据库中
      * @param applicationDtoSet applicationDto Set
      */
-    void batchInsertApplications(Set<ApplicationDto> applicationDtoSet);
+    Integer batchInsertApplications(Set<ApplicationDto> applicationDtoSet);
 
     /**
      * 通过instanceSet 插入或者更新对应的application数据
      * @param instanceSets instance的set
      */
-    void insertOrUpdateApplicationInfo(Set<ApplicationInstanceDto> instanceSets);
+    Integer insertOrUpdateApplicationInfo(Set<ApplicationInstanceDto> instanceSets);
 }

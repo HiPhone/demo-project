@@ -113,7 +113,7 @@ public class CheckHelper {
                 for (ApplicationInstanceDto eurekaInstance : differentInstanceSet) {
                     if (dbInstance.getInstanceId().equals(eurekaInstance.getInstanceId())) {
                         eurekaInstance.setDownTime(new Date());
-                        eurekaInstanceService.updateInstanceState(eurekaInstance, Constant.STATE_DOWN);
+                        eurekaInstanceService.insertOrUpdateInstance(eurekaInstance);
                         eurekaHistoryService.insertInstanceHistory(constructHistoryDto(eurekaInstance, Constant.STATE_DOWN));
                         log.info("Save a history of instance with state UP to DOWN, instanceId is {}, clusterId is {}", eurekaInstance.getInstanceId(), eurekaInstance.getClusterId());
                     }
@@ -128,7 +128,7 @@ public class CheckHelper {
         //db没有的数据， 插入数据库或者更新数据库
         if (!upInstanceSet.isEmpty()) {
             for (ApplicationInstanceDto instance : upInstanceSet) {
-                eurekaInstanceService.insertOrUpdateDownInstance(instance);
+                eurekaInstanceService.insertOrUpdateInstance(instance);
                 ApplicationHistoryDto history = constructHistoryDto(instance, Constant.STATE_UP);
                 eurekaHistoryService.insertInstanceHistory(history);
                 log.info("Success to save a history of instance insert or update from DOWN to UP, which instance id is {}", instance.getInstanceId());

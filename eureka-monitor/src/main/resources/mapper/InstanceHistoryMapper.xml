@@ -3,10 +3,10 @@
 <mapper namespace="org.hiphone.eureka.monitor.mapper.InstanceHistoryMapper">
     <resultMap id="historyResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto">
         <id column="ID" property="id" jdbcType="BIGINT"/>
-        <id column="CLUSTER_ID" property="clusterId" javaType="VARCHAR"/>
-        <result column="APPLICATION_NAME" property="applicationName" javaType="VARCHAR"/>
-        <result column="IP_ADDRESS" property="ipAddress" javaType="VARCHAR"/>
-        <result column="STATE" property="state" javaType="INTEGER"/>
+        <id column="CLUSTER_ID" property="clusterId" jdbcType="VARCHAR"/>
+        <result column="APPLICATION_NAME" property="applicationName" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="STATE" property="state" jdbcType="INTEGER"/>
         <result column="LOG_TIME" property="logTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 

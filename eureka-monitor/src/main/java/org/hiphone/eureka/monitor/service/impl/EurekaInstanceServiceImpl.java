@@ -23,7 +23,7 @@ public class EurekaInstanceServiceImpl implements EurekaInstanceService {
     @Override
     public Set<ApplicationInstanceDto> queryInstancesByStateAndClusterId(int state, String clusterId) {
         try {
-            return eurekaInstanceMapper.queryInstancesByState(state, clusterId);
+            return eurekaInstanceMapper.queryInstancesByStateAndClusterId(state, clusterId);
         } catch (Exception e) {
             log.error("Database connect get error! please check it: {}", e.getMessage());
         }
@@ -31,16 +31,7 @@ public class EurekaInstanceServiceImpl implements EurekaInstanceService {
     }
 
     @Override
-    public void updateInstanceState(ApplicationInstanceDto instance, Integer newState) {
-        try {
-            eurekaInstanceMapper.updateInstanceState(instance, newState);
-        } catch (Exception e) {
-            log.error("Database connect get error! please check it: {}", e.getMessage());
-        }
-    }
-
-    @Override
-    public void insertOrUpdateDownInstance(ApplicationInstanceDto instance) {
+    public void insertOrUpdateInstance(ApplicationInstanceDto instance) {
         try {
             eurekaInstanceMapper.insertOrUpdateDownInstance(instance);
         } catch (Exception e) {

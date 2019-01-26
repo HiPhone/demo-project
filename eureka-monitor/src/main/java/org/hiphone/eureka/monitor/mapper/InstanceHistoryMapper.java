@@ -9,5 +9,5 @@ public interface InstanceHistoryMapper {
      * 向数据库中插入一条历史信息
      * @param history 历史信息封装类
      */
-    void insertInstanceHistory(@Param("history") ApplicationHistoryDto history);
+    Integer insertInstanceHistory(@Param("history") ApplicationHistoryDto history);
 }

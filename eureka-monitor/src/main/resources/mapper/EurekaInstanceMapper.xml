@@ -3,14 +3,14 @@
 <mapper namespace="org.hiphone.eureka.monitor.mapper.EurekaInstanceMapper">
     <resultMap id="instanceResultMap" type="org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto">
         <id column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR"/>
-        <id column="CLUSTER_ID" property="clusterId" javaType="VARCHAR"/>
-        <result column="APPLICATION_NAME" property="applicationName" javaType="VARCHAR"/>
-        <result column="HOST_NAME" property="hostname" javaType="VARCHAR"/>
-        <result column="IP_ADDRESS" property="ipAddress" javaType="VARCHAR"/>
-        <result column="SERVICE_PORT" property="servicePort" javaType="INTEGER"/>
-        <result column="CURRENT_STATE" property="currentState" javaType="INTEGER"/>
+        <result column="CLUSTER_ID" property="clusterId" jdbcType="VARCHAR"/>
+        <result column="APPLICATION_NAME" property="applicationName" jdbcType="VARCHAR"/>
+        <result column="HOST_NAME" property="hostname" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="SERVICE_PORT" property="servicePort" jdbcType="INTEGER"/>
+        <result column="CURRENT_STATE" property="currentState" jdbcType="INTEGER"/>
         <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
-        <result column="DOWN_TIME" property="downTime" javaType="TIMESTAMP"/>
+        <result column="DOWN_TIME" property="downTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="base_info">
@@ -31,29 +31,33 @@
     <insert id="insertOrUpdateDownInstance" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto">
         INSERT INTO eureka_instances
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="instanceId != null">INSTANCE_ID, </if>
-            <if test="clusterId != null">CLUSTER_ID, </if>
-            <if test="applicationName != null">APPLICATION_NAME, </if>
-            <if test="hostname != null">HOST_NAME, </if>
-            <if test="ipAddress != null">IP_ADDRESS, </if>
-            <if test="servicePort != null">SERVICE_PORT, </if>
-            <if test="currentState != null">CURRENT_STATE, </if>
-            <if test="registerTime != null">REGISTER_TIME, </if>
-            <if test="downTime != null">DOWN_TIME, </if>
+            <if test="instance.instanceId != null">INSTANCE_ID, </if>
+            <if test="instance.clusterId != null">CLUSTER_ID, </if>
+            <if test="instance.applicationName != null">APPLICATION_NAME, </if>
+            <if test="instance.hostname != null">HOST_NAME, </if>
+            <if test="instance.ipAddress != null">IP_ADDRESS, </if>
+            <if test="instance.servicePort != null">SERVICE_PORT, </if>
+            <if test="instance.currentState != null">CURRENT_STATE, </if>
+            <if test="instance.registerTime != null">REGISTER_TIME, </if>
+            <if test="instance.downTime != null">DOWN_TIME, </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="instanceId != null">#{instanceId, jdbcType=VARCHAR}, </if>
-            <if test="clusterId != null">#{clusterId, jdbcType=VARCHAR}, </if>
-            <if test="applicationName != null">#{applicationName, jdbcType=VARCHAR}, </if>
-            <if test="hostname != null">#{hostname, jdbcType=VARCHAR}, </if>
-            <if test="ipAddress != null">#{ipAddress, jdbcType=VARCHAR}, </if>
-            <if test="servicePort != null">#{servicePort, jdbcType=INTEGER}, </if>
-            <if test="currentState != null">#{currentState, jdbcType=INTEGER}, </if>
-            <if test="registerTime != null">#{registerTime, jdbcType=TIMESTAMP}, </if>
-            <if test="downTime != null">#{downTime, jdbcType=TIMESTAMP}, </if>
+            <if test="instance.instanceId != null">#{instance.instanceId, jdbcType=VARCHAR}, </if>
+            <if test="instance.clusterId != null">#{instance.clusterId, jdbcType=VARCHAR}, </if>
+            <if test="instance.applicationName != null">#{instance.applicationName, jdbcType=VARCHAR}, </if>
+            <if test="instance.hostname != null">#{instance.hostname, jdbcType=VARCHAR}, </if>
+            <if test="instance.ipAddress != null">#{instance.ipAddress, jdbcType=VARCHAR}, </if>
+            <if test="instance.servicePort != null">#{instance.servicePort, jdbcType=INTEGER}, </if>
+            <if test="instance.currentState != null">#{instance.currentState, jdbcType=INTEGER}, </if>
+            <if test="instance.registerTime != null">#{instance.registerTime, jdbcType=TIMESTAMP}, </if>
+            <if test="instance.downTime != null">#{instance.downTime, jdbcType=TIMESTAMP}, </if>
         </trim>
-        ON DUPLICATE KEY UPDATE CURRENT_STATE = #{currentState, jdbcType=INTEGER}
+        ON DUPLICATE KEY UPDATE CURRENT_STATE = #{instance.currentState, jdbcType=INTEGER}
+        ,REGISTER_TIME = #{instance.registerTime, jdbcType=TIMESTAMP}
+        <if test="instance.downTime != null">
+        , DOWN_TIME = #{instance.downTime, jdbcType=TIMESTAMP}
+        </if>
     </insert>
 
 </mapper>

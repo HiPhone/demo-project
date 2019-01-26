@@ -4,7 +4,7 @@ spring:
   application:
     name: eureka-monitor
   datasource:
-    url: jdbc:mysql://localhost:3306/monitor?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/monitor?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT&useOldAliasMetadataBehavior=true
     username: root
     password: tKzRFGdS5hs=
     type: com.alibaba.druid.pool.DruidDataSource
@@ -22,6 +22,9 @@ spring:
       test-on-return: false
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       pool-prepared-statements: true
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: classpath*:org/hiphone/eureka/monitor/entitys/*
 #quartz
 org:
   quartz:

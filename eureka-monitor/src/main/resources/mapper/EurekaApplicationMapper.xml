@@ -32,11 +32,10 @@
     </insert>
 
     <insert id="insertOrUpdateApplicationInfo" parameterType="java.util.Set">
-        INSERT INTO eureka_applications (
+        INSERT INTO eureka_applications
         <include refid="base_info"/>
-        )
         values
-        <foreach collection="set" item="instance" index="index" separator=",">
+        <foreach collection="collection" item="instance" index="index" separator=",">
             (#{instance.clusterId, jdbcType=VARCHAR},
              #{instance.applicationName, jdbcType=VARCHAR},
              1, 1)
