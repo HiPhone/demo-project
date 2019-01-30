@@ -22,11 +22,6 @@
         <include refid="base_info"/>
         FROM eureka_instances WHERE CURRENT_STATE = #{state} and CLUSTER_ID = #{clusterId};
     </select>
-
-    <update id="updateInstanceState">
-        UPDATE eureka_instances SET CURRENT_STATE = #{state, jdbcType=INTEGER}
-        WHERE CLUSTER_ID = #{instance.clusterId} and INSTANCE_ID = #{instance.instanceId}
-    </update>
     
     <insert id="insertOrUpdateDownInstance" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto">
         INSERT INTO eureka_instances

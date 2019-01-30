@@ -14,20 +14,20 @@
         ID, CLUSTER_ID, APPLICATION_NAME, IP_ADDRESS, STATE, LOG_TIME
     </sql>
 
-    <insert id="insertApplicationHistory" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto">
-        INSERT INTO eureka_history
+    <insert id="insertInstanceHistory" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto">
+        INSERT INTO eureka_historys
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="clusterId != null">CLUSTER_ID, </if>
-            <if test="applicationName != null">APPLICATION_NAME, </if>
-            <if test="ipAddress != null">IP_ADDRESS,</if>
-            <if test="state != null">STEATE,</if>
+            <if test="history.clusterId != null">CLUSTER_ID, </if>
+            <if test="history.applicationName != null">APPLICATION_NAME, </if>
+            <if test="history.ipAddress != null">IP_ADDRESS,</if>
+            <if test="history.state != null">STATE,</if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="clusterId != null">#{clusterId, jdbcType=VARCHAR}, </if>
-            <if test="applicationName != null">#{applicationName, jdbcType=VARCHAR}, </if>
-            <if test="ipAddress != null">#{ipAddress, jdbcType=VARCHAR}, </if>
-            <if test="state != null">#{state, jdbcType=INTEGER},</if>
+            <if test="history.clusterId != null">#{history.clusterId, jdbcType=VARCHAR}, </if>
+            <if test="history.applicationName != null">#{history.applicationName, jdbcType=VARCHAR}, </if>
+            <if test="history.ipAddress != null">#{history.ipAddress, jdbcType=VARCHAR}, </if>
+            <if test="history.state != null">#{history.state, jdbcType=INTEGER},</if>
         </trim>
     </insert>
 

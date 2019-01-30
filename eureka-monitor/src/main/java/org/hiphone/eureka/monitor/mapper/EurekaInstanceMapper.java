@@ -18,12 +18,6 @@ public interface EurekaInstanceMapper {
      */
     Set<ApplicationInstanceDto> queryInstancesByStateAndClusterId(@Param("state") int state, @Param("clusterId") String clusterId);
 
-    /**
-     * 更新instance的状态
-     * @param instance instance信息的封装
-     * @param state 更新后的状态
-     */
-    Integer updateInstanceState(@Param("instance") ApplicationInstanceDto instance, @Param("state") Integer state);
 
     /**
      * 插入一条instance数据或者更新一条instance数据

@@ -19,11 +19,10 @@
     </select>
 
     <insert id="batchInsertApplications" parameterType="java.util.Set">
-        INSERT INTO eureka_applications (
-        <include refid="base_info"/>
-        )
+        INSERT INTO eureka_applications
+        (<include refid="base_info"/>)
         values
-        <foreach collection="set" item="application" index="index" separator=",">
+        <foreach collection="applicationSet" item="application" index="index" separator=",">
             (#{application.clusterId, jdbcType=VARCHAR},
              #{application.applicationName, jdbcType=VARCHAR},
              #{application.upInstanceNum, jdbcType=INTEGER},
@@ -33,7 +32,7 @@
 
     <insert id="insertOrUpdateApplicationInfo" parameterType="java.util.Set">
         INSERT INTO eureka_applications
-        <include refid="base_info"/>
+        (<include refid="base_info"/>)
         values
         <foreach collection="collection" item="instance" index="index" separator=",">
             (#{instance.clusterId, jdbcType=VARCHAR},
@@ -44,7 +43,7 @@
               WHERE CURRENT_STATE = 0 AND CLUSTER_ID = #{instance.clusterId, jdbcType=VARCHAR}
               AND APPLICATION_NAME = #{instance.applicationName, jdbcType=VARCHAR}
             ),
-            TOTAL NUM = (
+            TOTAL_NUM = (
              SELECT COUNT(*) FROM eureka_instances
              WHERE CLUSTER_ID = #{instance.clusterId, jdbcType=VARCHAR}
              AND APPLICATION_NAME = #{instance.applicationName, jdbcType=VARCHAR}
