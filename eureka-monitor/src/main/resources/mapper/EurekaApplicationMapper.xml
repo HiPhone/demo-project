@@ -18,17 +18,9 @@
         FROM eureka_applications WHERE CLUSTER_ID = #{clusterId}
     </select>
 
-    <insert id="batchInsertApplications" parameterType="java.util.Set">
-        INSERT INTO eureka_applications
-        (<include refid="base_info"/>)
-        values
-        <foreach collection="applicationSet" item="application" index="index" separator=",">
-            (#{application.clusterId, jdbcType=VARCHAR},
-             #{application.applicationName, jdbcType=VARCHAR},
-             #{application.upInstanceNum, jdbcType=INTEGER},
-             #{application.totalInstanceNum, jdbcType=INTEGER})
-        </foreach>
-    </insert>
+    <select id="queryDistinctClusterId" resultType="java.lang.String">
+        SELECT DISTINCT CLUSTER_ID FROM eureka_applications
+    </select>
 
     <insert id="insertOrUpdateApplicationInfo" parameterType="java.util.Set">
         INSERT INTO eureka_applications

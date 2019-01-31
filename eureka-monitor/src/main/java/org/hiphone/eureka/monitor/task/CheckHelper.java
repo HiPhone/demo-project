@@ -3,7 +3,6 @@ package org.hiphone.eureka.monitor.task;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.monitor.constants.Constant;
-import org.hiphone.eureka.monitor.entitys.ApplicationDto;
 import org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.hiphone.eureka.monitor.service.EurekaApplicationService;
@@ -12,7 +11,10 @@ import org.hiphone.eureka.monitor.service.EurekaInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,6 @@ public class CheckHelper {
      * 存放instance缓存信息的map
      */
     private Map<String ,Set<ApplicationInstanceDto>> clusterInstanceCacheMap = new ConcurrentHashMap<>();
-
 
     @Autowired
     private EurekaInstanceService eurekaInstanceService;
@@ -59,7 +60,7 @@ public class CheckHelper {
         Set<ApplicationInstanceDto> downInstancesSet = Sets.difference(oldInstanceSet, eurekaInstanceSet);
 
         downInstancesSet.forEach(d -> {
-            d.setCurrentState(1);
+            d.setCurrentState(Constant.STATE_DOWN);
         });
 
         instanceDifferenceSet.addAll(upInstancesSet);
@@ -68,47 +69,23 @@ public class CheckHelper {
     }
 
     /**
-     * 对面application新旧数据，返回差异
-     * @param clusterId 集群id
-     * @param differentInstanceSet instance的差异集合
-     * @return application的差异集合
-     */
-    public Set<ApplicationDto> checkApplications(String clusterId, Set<ApplicationInstanceDto> differentInstanceSet) {
-        Set<ApplicationDto> newApplicationsSet = new LinkedHashSet<>();
-        differentInstanceSet.forEach(instance -> {
-            ApplicationDto application = new ApplicationDto();
-            application.setClusterId(clusterId);
-            application.setApplicationName(instance.getApplicationName());
-            newApplicationsSet.add(application);
-        });
-
-        Set<ApplicationDto> oldApplicationsSet = eurekaApplicationService.queryApplicationsByClusterId(clusterId);
-        return Sets.difference(newApplicationsSet, oldApplicationsSet);
-    }
-
-    /**
      * 更新数据库的数据
      * @param clusterId 集群id
-     * @param differentApplicationSet application
      * @param differentInstanceSet applicationInstances
      */
-    public void updateDataToDatabase(String clusterId, Set<ApplicationDto> differentApplicationSet, Set<ApplicationInstanceDto> differentInstanceSet) {
-        //eurekaApplicationSet不为空，有新的application注册，插入数据
-        if (!differentApplicationSet.isEmpty()) {
-            eurekaApplicationService.batchSaveApplications(differentApplicationSet);
-        }
+    public void updateDataToDatabase(String clusterId,  Set<ApplicationInstanceDto> differentInstanceSet) {
 
         Set<ApplicationInstanceDto> dbApplicationInstanceSet = eurekaInstanceService.queryInstancesByStateAndClusterId(Constant.STATE_UP, clusterId);
         Set<ApplicationInstanceDto> tmpApplicationInstances = new LinkedHashSet<>(dbApplicationInstanceSet);
 
         if (!dbApplicationInstanceSet.isEmpty()) {
             //eureka remove = eureka -db, db remove - db - eureka
-            dbApplicationInstanceSet.removeAll(tmpApplicationInstances);
+            dbApplicationInstanceSet.removeAll(differentInstanceSet);
             differentInstanceSet.removeAll(tmpApplicationInstances);
         }
 
         //db已经有的数据，已经down, 更新state为down， 并记录down的历史记录
-        if (!differentInstanceSet.isEmpty() && dbApplicationInstanceSet.isEmpty()) {
+        if (!differentInstanceSet.isEmpty() && !dbApplicationInstanceSet.isEmpty()) {
             for (ApplicationInstanceDto dbInstance : dbApplicationInstanceSet) {
                 for (ApplicationInstanceDto eurekaInstance : differentInstanceSet) {
                     if (dbInstance.getInstanceId().equals(eurekaInstance.getInstanceId())) {
@@ -124,6 +101,7 @@ public class CheckHelper {
         Set<ApplicationInstanceDto> upInstanceSet = differentInstanceSet.stream()
                 .filter(instance -> instance.getCurrentState().equals(Constant.STATE_UP))
                 .collect(Collectors.toSet());
+
 
         //db没有的数据， 插入数据库或者更新数据库
         if (!upInstanceSet.isEmpty()) {
@@ -148,6 +126,7 @@ public class CheckHelper {
      */
     public void updateCache(String clusterId, Set<ApplicationInstanceDto> eurekaInstanceSet) {
         clusterInstanceCacheMap.put(clusterId, eurekaInstanceSet);
+        log.info("Finished update the cache, cache size is {}", clusterInstanceCacheMap.get(clusterId).size());
     }
 
     /**

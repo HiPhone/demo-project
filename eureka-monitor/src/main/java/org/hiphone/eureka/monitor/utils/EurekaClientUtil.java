@@ -3,7 +3,7 @@ package org.hiphone.eureka.monitor.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.eureka.monitor.entitys.ApplicationHistoryDto;
+import org.hiphone.eureka.monitor.constants.Constant;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ public class EurekaClientUtil {
         int selectedIndex = clusterUrls.length - 1;
         String selectedUrl = clusterUrls[selectedIndex];
 
-        for (int iindex = 0; iindex < TRY_TIME; iindex++) {
+        for (int index = 0; index < TRY_TIME; index++) {
             try {
                 eurekaJson = restTemplate.getForEntity(selectedUrl, JSONObject.class).getBody();
             } catch (Exception e) {
@@ -95,10 +95,10 @@ public class EurekaClientUtil {
                 applicationInstanceDto.setApplicationName(application.getString(EUREKA_NAME));
                 applicationInstanceDto.setHostname(singleInstance.getString(EUREKA_HOSTNAME));
                 applicationInstanceDto.setServicePort(port.getInteger("$"));
-                applicationInstanceDto.setCurrentState(0);
+                applicationInstanceDto.setCurrentState(Constant.STATE_UP);
                 applicationInstanceDto.setIpAddress(singleInstance.getString(EUREKA_IPADDRESS));
                 applicationInstanceDto.setRegisterTime(new Date(leaseInfo.getLong(EUREKA_REGISTER_TIME)));
-                applicationInstanceDto.setDownTime(new Date(0));
+                applicationInstanceDto.setDownTime(new Date(Constant.DEFAULT_DOWNTIME));
                 eurekaServiceInstanceSet.add(applicationInstanceDto);
             }
         }

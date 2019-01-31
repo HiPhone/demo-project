@@ -3,7 +3,6 @@ package org.hiphone.eureka.monitor.task;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.monitor.config.EurekaDataCenterConfig;
-import org.hiphone.eureka.monitor.entitys.ApplicationDto;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 import org.hiphone.eureka.monitor.utils.EurekaClientUtil;
 import org.quartz.JobExecutionContext;
@@ -33,29 +32,30 @@ public class EurekaStatusChecker implements BaseJob {
     public void execute(JobExecutionContext context) {
         log.info("Starting to check the eureka status......");
 
-//        Map<String, String> clustersMap = eurekaDataCenterConfig.getClusters();
-//
-//        clustersMap.forEach((clusterId, clusterUrlString) -> {
-//            String[] clusterUrls = clusterUrlString.split(",");
-//            log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Starting to check cluster: {} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", clusterId);
-//            JSONObject eurekaJson = eurekaClient.getEurekaDataJson(clusterId, clusterUrls);
-//
-//            if (eurekaJson != null) {
-//                Set<ApplicationInstanceDto> eurekaInstanceSet = eurekaClient.getEurekaServiceInstanceSet(clusterId, eurekaJson);
-//                //比较缓存与eurekaInstanceSet的差异
-//                Set<ApplicationInstanceDto> instanceDifferenceSet = checkHelper.checkInstances(clusterId, eurekaInstanceSet);
-//                Set<ApplicationDto> applicationDifferenceSet = checkHelper.checkApplications(clusterId, instanceDifferenceSet);
-//
-//                // 更新数据库
-//                checkHelper.updateDataToDatabase(clusterId, applicationDifferenceSet, instanceDifferenceSet);
-//
-//                //更新缓存
-//                checkHelper.updateCache(clusterId, eurekaInstanceSet);
-//            } else {
-//                log.warn("One eureka cluster is down!  cluster id is {}, please check it!", clusterId);
-//            }
+        Map<String, String> clustersMap = eurekaDataCenterConfig.getClusters();
 
-//        });
+        clustersMap.forEach((clusterId, clusterUrlString) -> {
+            String[] clusterUrls = clusterUrlString.split(",");
+            log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Starting to check cluster: {} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", clusterId);
+
+            JSONObject eurekaJson = eurekaClient.getEurekaDataJson(clusterId, clusterUrls);
+
+            if (eurekaJson != null) {
+                Set<ApplicationInstanceDto> eurekaInstanceSet = eurekaClient.getEurekaServiceInstanceSet(clusterId, eurekaJson);
+
+                //比较缓存与eurekaInstanceSet的差异
+                Set<ApplicationInstanceDto> instanceDifferenceSet = checkHelper.checkInstances(clusterId, eurekaInstanceSet);
+
+                // 更新数据库
+                checkHelper.updateDataToDatabase(clusterId, instanceDifferenceSet);
+
+                //更新缓存
+                checkHelper.updateCache(clusterId, eurekaInstanceSet);
+            } else {
+                log.warn("One eureka cluster is down!  cluster id is {}, please check it!", clusterId);
+            }
+
+        });
     }
 
 }

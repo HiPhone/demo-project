@@ -19,4 +19,5 @@ public class Constant {
     public static final String ENCODE_TYPE = "UTF-8";
     public static final Integer STATE_UP = 0;
     public static final Integer STATE_DOWN = 1;
+    public static final Integer DEFAULT_DOWNTIME = 1000;
 }
