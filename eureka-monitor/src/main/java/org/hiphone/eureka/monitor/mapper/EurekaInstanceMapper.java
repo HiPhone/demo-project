@@ -25,5 +25,16 @@ public interface EurekaInstanceMapper {
      */
     Integer insertOrUpdateDownInstance(@Param("instance") ApplicationInstanceDto instance);
 
+    /**
+     * 通过clusterId 或者 applicationName获取instance的信息
+     * @param clusterId 集群id
+     * @param applicationName 应用名称
+     * @param state instance所处的状态
+     * @return 符合条件的instance的集合
+     */
+    Set<ApplicationInstanceDto> queryInstancesByClusterIdOrApplicationNameOrState(@Param("clusterId") String clusterId,
+                                                                           @Param("applicationName") String applicationName,
+                                                                           @Param("state") Integer state);
+
 
 }

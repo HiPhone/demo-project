@@ -2,6 +2,7 @@ package org.hiphone.eureka.monitor.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
+import org.hiphone.eureka.monitor.entitys.ResultMessage;
 import org.hiphone.eureka.monitor.mapper.EurekaInstanceMapper;
 import org.hiphone.eureka.monitor.service.EurekaInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class EurekaInstanceServiceImpl implements EurekaInstanceService {
     public void insertOrUpdateInstance(ApplicationInstanceDto instance) {
         try {
             eurekaInstanceMapper.insertOrUpdateDownInstance(instance);
+        } catch (Exception e) {
+            log.error("Database connect get error! please check it: {}", e.getMessage());
+        }
+    }
+
+    @Override
+    public ResultMessage queryInstancesByClusterIdOrApplicationNameOrState(String clusterId, String applicationName, Integer state) {
+        try {
+            eurekaInstanceMapper.queryInstancesByClusterIdOrApplicationNameOrState(clusterId, applicationName, state);
         } catch (Exception e) {
             log.error("Database connect get error! please check it: {}", e.getMessage());
         }

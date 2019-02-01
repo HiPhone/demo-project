@@ -20,7 +20,19 @@
     <select id="queryInstancesByStateAndClusterId"  resultMap="instanceResultMap">
         SELECT
         <include refid="base_info"/>
-        FROM eureka_instances WHERE CURRENT_STATE = #{state} and CLUSTER_ID = #{clusterId};
+        FROM eureka_instances WHERE CURRENT_STATE = #{state, jdbcType=INTEGER} and CLUSTER_ID = #{clusterId, jdbcType=VARCHAR};
+    </select>
+
+    <select id="queryInstancesByClusterIdOrApplicationNameOrState" resultMap="instanceResultMap">
+        SELECT
+        <include refid="base_info"/>
+        FROM eureka_instances WHERE
+        <if test="clusterId != null and applicationName == null">CLUSTER_ID = #{clusterId, jdbcType=VARCHAR}</if>
+        <if test="clusterId == null and applicationName != null">APPLICATION_NAME = #{applicationName, jdbcType=VARCHAR}</if>
+        <if test="clusterId != null and applicationName != null">
+          CLUSTER_ID = #{clusterId, jdbcTpye=VARCHAR} and APPLICATION_NAME = #{applicationName, jdbcType=VARCHAR}
+        </if>
+        <if test="state != null"> and CURRENT_STATE = #{state, jdbcType=INTEGER}</if>
     </select>
     
     <insert id="insertOrUpdateDownInstance" parameterType="org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto">
