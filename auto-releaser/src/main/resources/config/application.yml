@@ -1,0 +1,5 @@
+logging:
+  config: classpath:config/log4j2.xml
+spring:
+  application:
+    name: spring-boot-demo
