@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * @author HiPhone
  */
@@ -24,6 +27,7 @@ public class Application {
         httpRequestFactory.setConnectTimeout(Constant.TIMEOUT_VALUE);
         return new RestTemplate(httpRequestFactory);
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

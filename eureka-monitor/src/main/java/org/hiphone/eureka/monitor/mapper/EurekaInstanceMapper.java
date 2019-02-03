@@ -3,6 +3,7 @@ package org.hiphone.eureka.monitor.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.hiphone.eureka.monitor.entitys.ApplicationInstanceDto;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,9 +33,9 @@ public interface EurekaInstanceMapper {
      * @param state instance所处的状态
      * @return 符合条件的instance的集合
      */
-    Set<ApplicationInstanceDto> queryInstancesByClusterIdOrApplicationNameOrState(@Param("clusterId") String clusterId,
-                                                                           @Param("applicationName") String applicationName,
-                                                                           @Param("state") Integer state);
+    List<ApplicationInstanceDto> queryInstancesByClusterIdOrApplicationNameOrState(@Param("clusterId") String clusterId,
+                                                                                   @Param("applicationName") String applicationName,
+                                                                                   @Param("state") Integer state);
 
 
 }

@@ -30,7 +30,7 @@
         <if test="clusterId != null and applicationName == null">CLUSTER_ID = #{clusterId, jdbcType=VARCHAR}</if>
         <if test="clusterId == null and applicationName != null">APPLICATION_NAME = #{applicationName, jdbcType=VARCHAR}</if>
         <if test="clusterId != null and applicationName != null">
-          CLUSTER_ID = #{clusterId, jdbcTpye=VARCHAR} and APPLICATION_NAME = #{applicationName, jdbcType=VARCHAR}
+          CLUSTER_ID = #{clusterId, jdbcType=VARCHAR} and APPLICATION_NAME = #{applicationName, jdbcType=VARCHAR}
         </if>
         <if test="state != null"> and CURRENT_STATE = #{state, jdbcType=INTEGER}</if>
     </select>

@@ -17,6 +17,7 @@ public class Constant {
     public static final String BASE64_KEY = "hcFKesGkfEkECB951q7VDoXBSnrBpHxJ";
     public static final String ENCRYPT_TYPE = "DESede";
     public static final String ENCODE_TYPE = "UTF-8";
+    public static final String NOT_AVAILABLE = "N/A";
     public static final Integer STATE_UP = 0;
     public static final Integer STATE_DOWN = 1;
     public static final Integer DEFAULT_DOWNTIME = 1000;
