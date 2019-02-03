@@ -1,4 +1,4 @@
-package org.hiphone.demo.constants;
+package org.hiphone.auto.publisher.constants;
 
 import lombok.Getter;
 

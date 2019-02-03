@@ -1,6 +1,6 @@
-package org.hiphone.demo.config;
+package org.hiphone.auto.publisher.config;
 
-import org.hiphone.demo.constants.Constant;
+import org.hiphone.auto.publisher.constants.Constant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;

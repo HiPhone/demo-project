@@ -1,4 +1,4 @@
-package org.hiphone.demo.entitys;
+package org.hiphone.auto.publisher.entitys;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

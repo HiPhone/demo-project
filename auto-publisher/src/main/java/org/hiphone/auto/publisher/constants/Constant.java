@@ -1,4 +1,4 @@
-package org.hiphone.demo.constants;
+package org.hiphone.auto.publisher.constants;
 
 /**
  * @author HiPhone
@@ -9,7 +9,7 @@ public class Constant {
 
     public static final String SWAGGER_TITLE = "Spring-Boot-Demo RESTful API 文档";
 
-    public static final String SWAGGER_DESCRIPTION = "Spring boot demo";
+    public static final String SWAGGER_DESCRIPTION = "auto-publisher";
 
     public static final String SWAGGER_SERVICE_URL = "http://localhost:8080";
 
