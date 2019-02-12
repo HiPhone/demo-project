@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,34 +36,18 @@ public class ApiBackendServiceImpl implements ApiBackendService {
 
     @Override
     public String queryApiDocByServiceName(String serviceName) {
-        String apiDocs = null;
-        try {
-            apiDocs = swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName);
-        } catch (Exception e) {
-            log.warn("The operation to database get error! {}", e);
-        }
-        return apiDocs;
+        return swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName);
     }
 
     @Override
     public boolean insertApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO) {
-        try {
-            swaggerCommonMapper.insertSwaggerApiInfo(swaggerApiDocsDTO);
-            return true;
-        } catch (Exception e) {
-            log.warn("The operation to database get error! {}", e);
-        }
-        return false;
+        swaggerCommonMapper.insertSwaggerApiInfo(swaggerApiDocsDTO);
+        return true;
     }
 
     @Override
     public boolean updateApiInfo(SwaggerApiDocsDto swaggerApiDocsDTO) {
-        try {
-            swaggerCommonMapper.updateApiInfo(swaggerApiDocsDTO);
-            return true;
-        } catch (Exception e) {
-            log.warn("The operation to database get error! {}", e);
-        }
-        return false;
+        swaggerCommonMapper.updateApiInfo(swaggerApiDocsDTO);
+        return true;
     }
 }

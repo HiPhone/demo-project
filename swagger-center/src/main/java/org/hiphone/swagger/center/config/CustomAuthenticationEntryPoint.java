@@ -1,6 +1,6 @@
 package org.hiphone.swagger.center.config;
 
-import org.hiphone.swagger.center.constants.ReturnMsg;
+import org.hiphone.swagger.center.exception.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

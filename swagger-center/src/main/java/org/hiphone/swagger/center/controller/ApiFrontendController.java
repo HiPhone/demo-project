@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.swagger.center.constants.ReturnMsg;
+import org.hiphone.swagger.center.exception.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
 import org.hiphone.swagger.center.service.ApiFrontendService;
 import org.springframework.beans.factory.annotation.Autowired;

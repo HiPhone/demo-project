@@ -3,9 +3,9 @@ package org.hiphone.swagger.center.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.hiphone.swagger.center.constants.ReturnMsg;
 import org.hiphone.swagger.center.entitys.ResultMessage;
 import org.hiphone.swagger.center.entitys.SwaggerApiDocsDto;
+import org.hiphone.swagger.center.exception.ReturnMsg;
 import org.hiphone.swagger.center.mapper.SwaggerCommonMapper;
 import org.hiphone.swagger.center.service.ApiFrontendService;
 import org.hiphone.swagger.center.service.StandardCheckService;
@@ -14,7 +14,11 @@ import org.hiphone.swagger.center.utils.StandardDetailsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author HiPHone
@@ -39,61 +43,41 @@ public class ApiFrontendServiceImpl implements ApiFrontendService {
     private StandardCheckService standardCheckService;
 
     @Override
-    public ResultMessage querySimplifyApiDocs(String serviceName) {
-        ResultMessage resultMessage;
-        try {
-            SwaggerApiDocsDto info = swaggerCommonMapper.querySwaggerInfoByServiceName(serviceName);
-            JSONObject apiDocs = objectMapper.readValue(info.getSwaggerApiDocs(), JSONObject.class);
-            Map<String, Object> simplifyApiDocs = ParseSwaggerUtil.parseSwaggerJson(apiDocs);
+    public ResultMessage querySimplifyApiDocs(String serviceName) throws IOException {
 
-            simplifyApiDocs.put(HOST, apiDocs.getString(HOST));
-            simplifyApiDocs.put(UPDATE_TIME, info.getUpdateTime());
-            simplifyApiDocs.put(NOT_STANDARD_NUM, standardCheckService.getNotStandardNum(apiDocs));
-            simplifyApiDocs.put(API_SUM, ParseSwaggerUtil.countSwaggerApiNum(apiDocs));
-            simplifyApiDocs.put(UN_REST_APIS, StandardDetailsUtil.getUnRestFulApiDetails(apiDocs));
+        SwaggerApiDocsDto info = swaggerCommonMapper.querySwaggerInfoByServiceName(serviceName);
+        JSONObject apiDocs = objectMapper.readValue(info.getSwaggerApiDocs(), JSONObject.class);
+        Map<String, Object> simplifyApiDocs = ParseSwaggerUtil.parseSwaggerJson(apiDocs);
 
-            resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
-                    ReturnMsg.SUCCESS.getMessage(),
-                    simplifyApiDocs);
-        } catch (Exception e) {
-            log.warn("The operation to database get error!", e);
-            resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
-                    ReturnMsg.SQL_ERROR.getMessage(),
-                    e.getMessage());
-        }
-        return resultMessage;
+        simplifyApiDocs.put(HOST, apiDocs.getString(HOST));
+        simplifyApiDocs.put(UPDATE_TIME, info.getUpdateTime());
+        simplifyApiDocs.put(NOT_STANDARD_NUM, standardCheckService.getNotStandardNum(apiDocs));
+        simplifyApiDocs.put(API_SUM, ParseSwaggerUtil.countSwaggerApiNum(apiDocs));
+        simplifyApiDocs.put(UN_REST_APIS, StandardDetailsUtil.getUnRestFulApiDetails(apiDocs));
+
+        return new ResultMessage(
+                ReturnMsg.SUCCESS.getCode(),
+                ReturnMsg.SUCCESS.getMessage(),
+                simplifyApiDocs
+        );
     }
 
     @Override
     public ResultMessage queryAllServiceNames() {
-        ResultMessage resultMessage;
-        try {
-            resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
-                    ReturnMsg.SUCCESS.getMessage(),
-                    fillDataWithName(swaggerCommonMapper.queryAllServiceNames()));
-        } catch (Exception e) {
-            log.warn("The operation to database get error!", e);
-            resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
-                    ReturnMsg.SQL_ERROR.getMessage(),
-                    e.getMessage());
-        }
-        return resultMessage;
+        return new ResultMessage(
+                ReturnMsg.SUCCESS.getCode(),
+                ReturnMsg.SUCCESS.getMessage(),
+                fillDataWithName(swaggerCommonMapper.queryAllServiceNames())
+        );
     }
 
     @Override
-    public ResultMessage queryApiDocsByServiceName(String serviceName) {
-        ResultMessage resultMessage;
-        try {
-            resultMessage = new ResultMessage(ReturnMsg.SUCCESS.getCode(),
-                    ReturnMsg.SUCCESS.getMessage(),
-                    objectMapper.readValue(swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName), JSONObject.class));
-        } catch (Exception e) {
-            log.warn("The operation to database get error!", e);
-            resultMessage = new ResultMessage(ReturnMsg.SQL_ERROR.getCode(),
-                    ReturnMsg.SQL_ERROR.getMessage(),
-                    e.getMessage());
-        }
-        return resultMessage;
+    public ResultMessage queryApiDocsByServiceName(String serviceName) throws IOException {
+        return new ResultMessage(
+                ReturnMsg.SUCCESS.getCode(),
+                ReturnMsg.SUCCESS.getMessage(),
+                objectMapper.readValue(swaggerCommonMapper.querySwaggerDocsByServiceName(serviceName), JSONObject.class)
+        );
     }
 
     /**

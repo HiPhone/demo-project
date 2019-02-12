@@ -1,4 +1,4 @@
-package org.hiphone.swagger.center.constants;
+package org.hiphone.swagger.center.exception;
 
 import lombok.Getter;
 
@@ -14,7 +14,7 @@ public enum ReturnMsg {
     PARAM_ERROR(1001, "接口参数有误"),
     FORBIDDEN(1003, "未登录，无法访问"),
     SQL_ERROR(1005, "数据库异常"),
-    BUSY_ERROR(1004, "服务繁忙，请稍后尝试");
+    IO_ERROR(1004, "读写错误");
 
     @Getter
     private String message;
