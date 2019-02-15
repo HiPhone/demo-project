@@ -28,7 +28,7 @@ public class EurekaClientUtil {
     private static final String EUREKA_LEASE_INFO = "leaseInfo";
     private static final String EUREKA_NAME = "name";
     private static final String EUREKA_HOSTNAME = "hostName";
-    private static final String EUREKA_IPADDRESS = "ipAddr";
+    private static final String EUREKA_IP_ADDRESS = "ipAddr";
     private static final String EUREKA_REGISTER_TIME = "registrationTimestamp";
     private static final String EUREKA_INSTANCE_ID = "instanceId";
 
@@ -96,7 +96,7 @@ public class EurekaClientUtil {
                 applicationInstanceDto.setHostname(singleInstance.getString(EUREKA_HOSTNAME));
                 applicationInstanceDto.setServicePort(port.getInteger("$"));
                 applicationInstanceDto.setCurrentState(Constant.STATE_UP);
-                applicationInstanceDto.setIpAddress(singleInstance.getString(EUREKA_IPADDRESS));
+                applicationInstanceDto.setIpAddress(singleInstance.getString(EUREKA_IP_ADDRESS));
                 applicationInstanceDto.setRegisterTime(new Date(leaseInfo.getLong(EUREKA_REGISTER_TIME)));
                 applicationInstanceDto.setDownTime(new Date(Constant.DEFAULT_DOWNTIME));
                 eurekaServiceInstanceSet.add(applicationInstanceDto);

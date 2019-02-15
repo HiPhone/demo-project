@@ -1,0 +1,6 @@
+# 填入说明：可填入多组数据，每个数据一行
+# ip：机器的ip地址
+# user: 操作该机器的user
+# password： user对应的password
+
+ip,user,password

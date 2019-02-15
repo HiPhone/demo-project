@@ -1,4 +1,4 @@
-package org.hiphone.auto.publisher.constants;
+package org.hiphone.auto.publisher.exception;
 
 import lombok.Getter;
 
