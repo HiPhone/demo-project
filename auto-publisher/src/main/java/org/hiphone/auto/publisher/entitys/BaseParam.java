@@ -1,5 +1,9 @@
 package org.hiphone.auto.publisher.entitys;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,34 +11,18 @@ import java.util.Map;
 /**
  * @author HiPhone
  */
+@Getter
+@ApiModel(value = "BaseParam", description = "shell脚本参数的封装类")
 public abstract class BaseParam {
 
-    /**
-     * 必须的参数
-     */
+    @ApiModelProperty(value = "必须的参数", name = "requiredParams")
     private Map<String, String> requiredParams = new LinkedHashMap<>();
 
-    /**
-     * 选填参数
-     */
+    @ApiModelProperty(value = "可选参数", name = "optionalParams")
     private Map<String, String> optionalParams = new LinkedHashMap<>();
 
-    /**
-     * 扩展的参数
-     */
+    @ApiModelProperty(value = "扩展参数", name = "extendedParams")
     private Map<String, String> extendedParams = new LinkedHashMap<>();
-
-    public Map<String, String> getRequiredParams() {
-        return requiredParams;
-    }
-
-    public Map<String, String> getOptionalParams() {
-        return optionalParams;
-    }
-
-    public Map<String, String> getExtendedParams() {
-        return extendedParams;
-    }
 
     public void addRequiredParams(String key, String value) {
         requiredParams.put(key, value);

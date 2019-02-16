@@ -8,9 +8,10 @@ import lombok.Getter;
 public enum ReturnMsg {
 
     SUCCESS(0, "服务调用成功"),
-    UNKNOWN_ERROR(9999, "未知错误请排查"),
-    UNAUTHORIZED(1001, "服务调用未授权"),
-    BUSY_ERROR(1004, "服务繁忙，请稍后尝试");
+    PARAM_ERROR(1001, "参数错误，请检查"),
+    HOST_INFO_ERROR(1002, "host信息格式错误"),
+    SSH_AUTH_ERROR(1003, "ssh认证信息不能为空"),
+    UNKNOWN_ERROR(9999, "未知错误请排查");
 
     @Getter
     private String message;
