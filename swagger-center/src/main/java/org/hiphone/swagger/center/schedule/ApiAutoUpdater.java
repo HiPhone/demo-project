@@ -32,7 +32,7 @@ public class ApiAutoUpdater {
             //更新数据到数据库中
             autoScanHelper.commitChangesToDatabase(swaggerApiDocsMap);
         } else {
-            log.warn("can't get application names from eureka......");
+            log.warn("can't get application names from eureka, please check eureka......");
         }
     }
 

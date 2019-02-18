@@ -38,7 +38,7 @@ public class AutoScanHelper {
     @Autowired
     private StandardCheckService standardCheckService;
 
-    private List<String> dbServiceNames = new ArrayList<>();
+    private List<String> dbServiceNames = new LinkedList<>();
     private String[] eurekaUrls = null;
 
     @PostConstruct
@@ -52,7 +52,7 @@ public class AutoScanHelper {
      * 到eureka中获取注册服务的信息
      * @return 注册服务信息的list
      */
-    public List<String> getApplicationNamesFromEureka() {
+     List<String> getApplicationNamesFromEureka() {
         String eurekaUrl = getRandomUrl(eurekaUrls);
         JSONObject eurekaApplicationJson = null;
 
@@ -61,6 +61,7 @@ public class AutoScanHelper {
             eurekaApplicationJson = restTemplate.getForEntity(eurekaUrl, JSONObject.class).getBody();
         } catch (Exception e) {
             log.warn("One eureka node is down! the node is {}", eurekaUrl);
+            e.printStackTrace();
         }
         return getApplicationNameList(eurekaApplicationJson);
     }
@@ -81,24 +82,16 @@ public class AutoScanHelper {
                 if (dbServiceNames.contains(k)) {
                     String dbApiDocs = apiBackendService.queryApiDocByServiceName(k);
                     if (!dbApiDocs.equals(v.toJSONString())) {
-                        try {
-                            apiDocsDTO.setUpdateTime(new Date(System.currentTimeMillis()));
-                            apiBackendService.updateApiInfo(apiDocsDTO);
-                            log.info("Complete updating apiDocs which name is {}", k);
-                        } catch (Exception e) {
-                            log.warn("The operation to database get error! please check it", e);
-                        }
+                        apiDocsDTO.setUpdateTime(new Date(System.currentTimeMillis()));
+                        apiBackendService.updateApiInfo(apiDocsDTO);
+                        log.info("Complete updating apiDocs which name is {}", k);
                     } else {
                         log.info("The new api-docs of {} equals to database's, stop to commit it", k);
                     }
                 } else {
                     //数据库中不存在该api-docs，插入这条新数据
-                    try {
-                        apiBackendService.insertApiInfo(apiDocsDTO);
-                        log.info("Insert a new api-docs record success, service id is {}", k);
-                    } catch (Exception e) {
-                        log.warn("The operation to database get error! please check it", e);
-                    }
+                    apiBackendService.insertApiInfo(apiDocsDTO);
+                    log.info("Insert a new api-docs record success, service id is {}", k);
                 }
             } else {
                 log.info("The swagger api-docs is not standard! service id is {}, stop commit it to database", k);
@@ -140,7 +133,7 @@ public class AutoScanHelper {
      * @return list
      */
     private List<String> getApplicationNameList(JSONObject eurekaJson) {
-        List<String> applicationNameList = new ArrayList<>();
+        List<String> applicationNameList = new LinkedList<>();
         if (eurekaJson != null) {
             JSONObject applications = eurekaJson.getJSONObject("applications");
             JSONArray applicationArray = applications.getJSONArray("application");
@@ -161,11 +154,7 @@ public class AutoScanHelper {
      * @return 构造完成的ribbon请求url
      */
     private static String constructRequestUrl(String serviceName) {
-        return new StringBuilder()
-                .append(Constant.URL_PREFIX)
-                .append(serviceName)
-                .append(Constant.URL_SUFFIX)
-                .toString();
+        return Constant.URL_PREFIX + serviceName + Constant.URL_SUFFIX;
     }
 
     /**
@@ -174,7 +163,7 @@ public class AutoScanHelper {
      * @return serviceName与api-docs对应的map
      */
     public Map<String, JSONObject> getSwaggerApiMap (List<String> serviceNames) {
-        Map<String, JSONObject> swaggerApiDocsMap = new HashMap<>();
+        Map<String, JSONObject> swaggerApiDocsMap = new LinkedHashMap<>();
 
         serviceNames.forEach(s -> {
             String requestUrl = constructRequestUrl(s);
@@ -185,7 +174,7 @@ public class AutoScanHelper {
                     log.info("Trying to fetch swagger api-docs from {} throws eureka service...... Try count is {}", requestUrl, index);
                     swaggerApiDocs = loadBalanced.getForEntity(requestUrl, JSONObject.class).getBody();
                 } catch (Exception e) {
-                    log.info("Fetching fail! Try again then......");
+                    log.info("Fetching api-docs fail! Try again then......");
                 }
                 if (swaggerApiDocs != null && swaggerApiDocs.toJSONString().contains(Constant.JUDGE_STRING)) {
                     swaggerApiDocsMap.put(s, swaggerApiDocs);
